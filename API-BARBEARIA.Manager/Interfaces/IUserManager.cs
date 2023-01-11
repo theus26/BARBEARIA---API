@@ -11,5 +11,6 @@ namespace API_BARBEARIA.Manager.Interfaces
     public interface IUserManager
     {
         string RegisterUser(UserRegisterDTO userRegister);
+        SucessLoginDTO Login(LoginDTO login);
     }
 }

@@ -57,6 +57,8 @@ namespace API_BARBEARIA.Repository
                     Phone = Phone,
                 };
                 _userDAO.Create(newUser);
+
+                
                 return newUser;
             }
             
@@ -64,6 +66,17 @@ namespace API_BARBEARIA.Repository
             {
                 throw;
             }
+        }
+
+        public User UserIsValid(string Email, string Password)
+        {
+            var User = _userDAO.GetAll().FirstOrDefault(x => x.Email == Email && x.Password == Password);
+            if (User == null)
+            {
+                throw new OperationCanceledException("Usuário e/ou Senha incorretos. Tente novamente.");
+            }
+            return User;
+
         }
     }
 }

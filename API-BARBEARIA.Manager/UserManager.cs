@@ -1,4 +1,5 @@
-﻿using API_BARBEARIA.Commons.Util;
+﻿using API_BARBEARIA.Commons.Services;
+using API_BARBEARIA.Commons.Util;
 using API_BARBEARIA.DAL.Entities;
 using API_BARBEARIA.DTO;
 using API_BARBEARIA.Manager.Interfaces;
@@ -19,6 +20,67 @@ namespace API_BARBEARIA.Manager
         {
             _userRepository = userRepository;
         }
+
+        public SucessLoginDTO Login(LoginDTO login)
+        {
+            try
+            {
+                //Validação para ver se os campos são nulos ou vazios.
+                if (string.IsNullOrEmpty(login.Email)) throw new ArgumentException("Email can't be empty or null");
+                if (string.IsNullOrEmpty(login.Password)) throw new ArgumentException("Password can´t be empty or null");
+
+                // Validação do tamanho da string
+                if (login.Email.Length <= 3) throw new ArgumentException("Email Inválid");
+                if (login.Password.Length <= 7) throw new ArgumentException("Password be more than characters");
+
+                //Validação com Regex
+                //Email
+                var EmailParser = new Regex(@"^([\w\.\-\+\d]+)@([\w\-]+)((\.(\w){2,3})+)$");
+                var EmailMatches = EmailParser.Matches(login.Email);
+                if (EmailMatches.Count == 0) throw new ArgumentException("Please enter a Email Valid");
+
+                //Password
+                var PasswordParser = new Regex(@"[a-zA-Z0-9]+");
+                var PasswordMatches = PasswordParser.Matches(login.Password);
+                if (PasswordMatches.Count == 0) throw new ArgumentException("Please password must contain letters and numbers");
+
+                // Criar hash da senha 
+                var password = MD5Helper.CreateHashMd5(login.Password);
+
+                //Verifica se a algum usuario
+                var userValid = _userRepository.UserIsValid(login.Email, password);
+
+                //pegar os dados para gerar o Token
+                var userToken = new User()
+                {
+                    IdUser = userValid.IdUser,
+                    Email = userValid.Email
+
+                };
+                //Gerãção do Token
+                var token = TokenService.criarToken(userToken);
+
+                //Mensagem de sucesso
+                var MessageSucess = new SucessLoginDTO()
+                {
+                    Message = "Successful login",
+                    IdUser = userValid.IdUser,
+                    Token = token,
+                    IsBarber = userValid.BarberAdmin
+
+                };
+
+
+
+                return MessageSucess;
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public string RegisterUser(UserRegisterDTO userRegister)
         {
             try

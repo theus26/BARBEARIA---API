@@ -86,3 +86,10 @@ C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - 
 C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\bin\Debug\net6.0\API-BARBEARIA.Manager.pdb
 C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\bin\Debug\net6.0\API-BARBEARIA.Commons.pdb
 C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\bin\Debug\net6.0\API-BARBEARIA.Repository.pdb
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\bin\Debug\net6.0\System.Web.Mvc.dll
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\bin\Debug\net6.0\System.Web.Razor.dll
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\bin\Debug\net6.0\System.Web.Helpers.dll
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\bin\Debug\net6.0\System.Web.WebPages.Deployment.dll
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\bin\Debug\net6.0\System.Web.WebPages.Razor.dll
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\bin\Debug\net6.0\System.Web.WebPages.dll
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\bin\Debug\net6.0\Microsoft.Web.Infrastructure.dll

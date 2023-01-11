@@ -41,6 +41,26 @@ namespace API_BARBEARIA.Controllers
                 });
             }
         }
+
+        [HttpPost]
+        public IActionResult Login(LoginDTO login)
+        {
+            try
+            {
+                //Estou recebendo os dados do user e será validado no manager
+                var UserLogin = _userManager.Login(login);
+                return Ok(UserLogin);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "Email ou Senha incorretos, Tente Novamente."
+                });
+            }
+        }
         
     }
 }

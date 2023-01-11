@@ -27,7 +27,11 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\mathe\\OneDrive\\Área de Trabalho\\Matheus\\Full-Stack\\Barbearia Design - fullStack\\Back-End\\API-BARBEARIA.DAL\\API-BARBEARIA.DAL.csproj": {
+                "projectPath": "C:\\Users\\mathe\\OneDrive\\Área de Trabalho\\Matheus\\Full-Stack\\Barbearia Design - fullStack\\Back-End\\API-BARBEARIA.DAL\\API-BARBEARIA.DAL.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -40,6 +44,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.AspNet.Mvc": {
+              "target": "Package",
+              "version": "[5.2.9, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.8, )"

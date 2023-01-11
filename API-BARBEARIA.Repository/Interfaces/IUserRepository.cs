@@ -10,5 +10,7 @@ namespace API_BARBEARIA.Repository.Interfaces
     public interface IUserRepository
     {
         User RegisterUser(string Name, string Email, string CPF, string Password, string Phone, bool IsAdminBarber);
+
+        User UserIsValid(string Email, string Password);
     }
 }
