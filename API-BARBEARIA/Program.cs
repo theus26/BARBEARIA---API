@@ -1,9 +1,13 @@
-﻿using API_BARBEARIA.DAL.DAO;
+﻿using API_BARBEARIA.Commons.Util;
+using API_BARBEARIA.DAL.DAO;
 using API_BARBEARIA.DAL.Entities;
 using API_BARBEARIA.Manager;
 using API_BARBEARIA.Manager.Interfaces;
 using API_BARBEARIA.Repository;
 using API_BARBEARIA.Repository.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +26,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,6 +37,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 
 app.UseAuthorization();
 

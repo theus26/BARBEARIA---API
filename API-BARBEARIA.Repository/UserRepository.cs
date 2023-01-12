@@ -1,5 +1,6 @@
 ﻿using API_BARBEARIA.DAL.DAO;
 using API_BARBEARIA.DAL.Entities;
+using API_BARBEARIA.DAL.Enums;
 using API_BARBEARIA.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,18 @@ namespace API_BARBEARIA.Repository
             _userDAO = userDAO;
             _schedulingDAO = schedulingDAO;
             _barberDAO = barberDAO;
+        }
+
+        public User GetEmail(long IdUser)
+        {
+           var getuser = _userDAO.GetAll().FirstOrDefault(x=> x.IdUser == IdUser);
+           return getuser;
+        }
+
+        public Scheduling GetScheduling(long IdUser)
+        {
+            var getscheduling = _schedulingDAO.GetAll().FirstOrDefault(x => x.IdUser == IdUser);
+            return getscheduling;
         }
 
         public User RegisterUser(string Name, string Email, string CPF, string Password, string Phone, bool IsAdminBarber)
@@ -46,7 +59,7 @@ namespace API_BARBEARIA.Repository
                 {
                     throw new OperationCanceledException("User already existis with Phone");
                 }
-
+                
                 var newUser = new User()
                 {
                     Email = Email,
@@ -66,6 +79,49 @@ namespace API_BARBEARIA.Repository
             {
                 throw;
             }
+        }
+
+        public Scheduling scheduling(long IdUser, DateTime HairCurtDate, string DesiredService, string Time, BarberEnum barberEnum)
+        {
+            if (DesiredService.Count() < 2 || Time.Count() < 2)
+            {
+                throw new OperationCanceledException("Could not create a new user, some fields may be invalid");
+            }
+
+            var UserId = _userDAO.GetAll().Where(x => x.IdUser == IdUser);
+            if (!UserId.Any())
+            {
+                throw new OperationCanceledException("User Don´t exist");
+            }
+
+            var ThereIstime = _schedulingDAO.GetAll().Where(x => x.Time == Time && x.HairCurtDate == HairCurtDate);
+            
+            if (ThereIstime.Any())
+            {
+                throw new OperationCanceledException("time already scheduled, please choose another time");
+            }
+
+           
+
+            var Salved = new Scheduling()
+            {
+                IdUser = IdUser,
+                Time = Time,
+                DesiredService = DesiredService,
+                HairCurtDate = HairCurtDate,
+                Barber = barberEnum
+
+            };
+            _schedulingDAO.Create(Salved);
+
+            var newSalved = new Barber()
+            {
+                IdSchedulling = Salved.IdSchedulling,
+                Name = Salved.Barber.ToString()
+            };
+            _barberDAO.Create(newSalved);
+
+            return Salved;
         }
 
         public User UserIsValid(string Email, string Password)

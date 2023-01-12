@@ -12,5 +12,7 @@ namespace API_BARBEARIA.Manager.Interfaces
     {
         string RegisterUser(UserRegisterDTO userRegister);
         SucessLoginDTO Login(LoginDTO login);
+
+        string RegisterScheduling(SchedulingDTO scheduling); 
     }
 }

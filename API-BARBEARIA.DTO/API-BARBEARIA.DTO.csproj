@@ -18,4 +18,8 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\API-BARBEARIA.DAL\API-BARBEARIA.DAL.csproj" />
+  </ItemGroup>
+
 </Project>

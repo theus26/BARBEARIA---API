@@ -185,7 +185,11 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\mathe\\OneDrive\\Área de Trabalho\\Matheus\\Full-Stack\\Barbearia Design - fullStack\\Back-End\\API-BARBEARIA.DAL\\API-BARBEARIA.DAL.csproj": {
+                "projectPath": "C:\\Users\\mathe\\OneDrive\\Área de Trabalho\\Matheus\\Full-Stack\\Barbearia Design - fullStack\\Back-End\\API-BARBEARIA.DAL\\API-BARBEARIA.DAL.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

@@ -1,5 +1,6 @@
 ﻿using API_BARBEARIA.DTO;
 using API_BARBEARIA.Manager.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_BARBEARIA.Controllers
@@ -22,6 +23,7 @@ namespace API_BARBEARIA.Controllers
         }
 
         [HttpPost]
+        
         public IActionResult RegisterUser(UserRegisterDTO userRegister)
         {
             try
@@ -61,6 +63,28 @@ namespace API_BARBEARIA.Controllers
                 });
             }
         }
+
+        [HttpPost]
+        public IActionResult Scheduling(SchedulingDTO scheduling)
+        {
+            try
+            {
+                var Sendscheduling = _userManager.RegisterScheduling(scheduling);
+                return Ok(Sendscheduling);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "Não Foi Possível realizar o Agendamento, Tente Novamente."
+                });
+            }
+
+        }
+
+        
         
     }
 }

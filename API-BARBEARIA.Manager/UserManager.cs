@@ -7,6 +7,8 @@ using API_BARBEARIA.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -69,8 +71,6 @@ namespace API_BARBEARIA.Manager
                     IsBarber = userValid.BarberAdmin
 
                 };
-
-
 
                 return MessageSucess;
 
@@ -142,6 +142,40 @@ namespace API_BARBEARIA.Manager
             {
                 throw new OperationCanceledException("Could not register a User! " + ex.Message);
             }
+        }
+
+        public string RegisterScheduling(SchedulingDTO scheduling)
+        {
+            try
+            {
+                //Validação para ver se os campos são nulos ou vazios.
+                if (string.IsNullOrEmpty(scheduling.DesiredService)) throw new ArgumentException("Desired Service can´t be empty or null");
+                if (string.IsNullOrEmpty(scheduling.Time)) throw new ArgumentException("Time can´t be empty or null");
+                if (scheduling.HairCurtDate.ToString() == "01/01/1900") throw new ArgumentException("Hair curte date can´t be empty or null");
+
+                //validação de tamanho da string
+                if (scheduling.DesiredService.Length <= 5) throw new ArgumentException("Desired Service must be more than 5 characters");
+                if (scheduling.Time.Length < 3) throw new ArgumentException("Time must be more 3 Characters");
+                if (scheduling.HairCurtDate.ToString().Length < 3) throw new ArgumentException("Hair curt date must be more 3 characters");
+                if (scheduling.IdUser == 0) throw new ArgumentException("There is no User with Iduser 0");
+                if (DateTime.Now >= scheduling.HairCurtDate.Date) throw new ArgumentException("Date Invalid");
+
+               
+
+                //Envia dados para o repository
+                var Sendscheduling = _userRepository.scheduling(scheduling.IdUser, scheduling.HairCurtDate, scheduling.DesiredService, scheduling.Time, scheduling.barberEnum);
+
+                
+
+                return "appointment successfully made";
+
+            }
+            catch
+            {
+                throw;
+            }
+            
+
         }
     }
 }

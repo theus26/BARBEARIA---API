@@ -1,4 +1,5 @@
 ﻿using API_BARBEARIA.DAL.Entities;
+using API_BARBEARIA.DAL.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,8 @@ namespace API_BARBEARIA.Repository.Interfaces
         User RegisterUser(string Name, string Email, string CPF, string Password, string Phone, bool IsAdminBarber);
 
         User UserIsValid(string Email, string Password);
+        Scheduling scheduling(long IdUser, DateTime HairCurtDate, string DesiredService, string Time, BarberEnum barberEnum);
+        User GetEmail(long IdUser);
+        Scheduling GetScheduling(long IdUser);
     }
 }
