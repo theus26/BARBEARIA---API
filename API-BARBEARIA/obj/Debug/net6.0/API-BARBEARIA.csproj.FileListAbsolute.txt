@@ -94,3 +94,8 @@ C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - 
 C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\bin\Debug\net6.0\System.Web.WebPages.dll
 C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\bin\Debug\net6.0\Microsoft.Web.Infrastructure.dll
 C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\obj\Debug\net6.0\staticwebassets\msbuild.API-BARBEARIA.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\obj\Debug\net6.0\staticwebassets\msbuild.build.API-BARBEARIA.props
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.API-BARBEARIA.props
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.API-BARBEARIA.props
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA\obj\Debug\net6.0\staticwebassets.pack.json

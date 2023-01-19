@@ -39,7 +39,7 @@ namespace API_BARBEARIA.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
                 {
                     Status = StatusCodes.Status400BadRequest,
-                    Error = "Ocorreu erro ao se Registrar, Tente Novamente!"
+                    Error = "There was an error registering, please try again!"
                 });
             }
         }
@@ -59,7 +59,7 @@ namespace API_BARBEARIA.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
                 {
                     Status = StatusCodes.Status400BadRequest,
-                    Error = "Email ou Senha incorretos, Tente Novamente."
+                    Error = "Incorrect email or password, please try again."
                 });
             }
         }
@@ -69,6 +69,7 @@ namespace API_BARBEARIA.Controllers
         {
             try
             {
+                //Estou recebendo os dados do user e será validado no manager
                 var Sendscheduling = _userManager.RegisterScheduling(scheduling);
                 return Ok(Sendscheduling);
             }
@@ -78,7 +79,7 @@ namespace API_BARBEARIA.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
                 {
                     Status = StatusCodes.Status400BadRequest,
-                    Error = "Não Foi Possível realizar o Agendamento, Tente Novamente."
+                    Error = "Failed to schedule, please try again."
                 });
             }
 

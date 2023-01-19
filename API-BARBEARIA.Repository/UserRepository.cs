@@ -65,7 +65,7 @@ namespace API_BARBEARIA.Repository
                     Email = Email,
                     CPF = CPF,
                     UserName = Name,
-                    BarberAdmin = IsAdminBarber,
+                    BarberAdmin = false,
                     Password = Password,
                     Phone = Phone,
                 };
@@ -87,21 +87,39 @@ namespace API_BARBEARIA.Repository
             {
                 throw new OperationCanceledException("Could not create a new user, some fields may be invalid");
             }
-
             var UserId = _userDAO.GetAll().Where(x => x.IdUser == IdUser);
             if (!UserId.Any())
             {
                 throw new OperationCanceledException("User Don´t exist");
             }
 
+            var GetUser = _userDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
+            foreach (User user in GetUser)
+            {
+                if(user.BarberAdmin == true)
+                {
+                    throw new Exception("It was not possible to make an appointment.");
+                }
+            }
+            var DesiredServiceUnic = _schedulingDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
+
+            foreach(Scheduling desiredService in DesiredServiceUnic)
+            {
+                if(desiredService.DesiredService == DesiredService)
+                {
+                    throw new Exception("service already scheduled for today");
+                }
+            }
+
             var ThereIstime = _schedulingDAO.GetAll().Where(x => x.Time == Time && x.HairCurtDate == HairCurtDate);
             
             if (ThereIstime.Any())
             {
-                throw new OperationCanceledException("time already scheduled, please choose another time");
+                throw new OperationCanceledException("Date and time already scheduled, please choose another again");
             }
-
+            
            
+
 
             var Salved = new Scheduling()
             {
@@ -129,7 +147,7 @@ namespace API_BARBEARIA.Repository
             var User = _userDAO.GetAll().FirstOrDefault(x => x.Email == Email && x.Password == Password);
             if (User == null)
             {
-                throw new OperationCanceledException("Usuário e/ou Senha incorretos. Tente novamente.");
+                throw new OperationCanceledException("Incorrect username and/or password. Try again.");
             }
             return User;
 
