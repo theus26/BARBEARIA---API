@@ -5,6 +5,7 @@ using API_BARBEARIA.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +22,18 @@ namespace API_BARBEARIA.Repository
             _userDAO = userDAO;
             _schedulingDAO = schedulingDAO;
             _barberDAO = barberDAO;
+        }
+
+        public string DeleteUser(long IdUser)
+        {
+            var ThereIsUser = _userDAO.GetAll().Where(x => x.IdUser == IdUser);
+            if (!ThereIsUser.Any())
+            {
+                throw new OperationCanceledException($"Could not find any with the given Id {IdUser}");
+            }
+            var getUser = _userDAO.Get(IdUser);
+            _userDAO.Delete(IdUser);
+            return $"IdUser:{IdUser} was Deleted";
         }
 
         public User GetEmail(long IdUser)
@@ -140,6 +153,39 @@ namespace API_BARBEARIA.Repository
             _barberDAO.Create(newSalved);
 
             return Salved;
+        }
+
+        public User UpdateUser(long IdUser, string Name, string Email, string CPF, string Password, string Phone, bool IsAdminBarber)
+        {
+            try
+            {
+                if (Email.Count() < 2 || CPF.Count() < 3 || Name.Count() < 3 || Phone.Count() < 3 || Password.Count() < 3)
+                {
+                    throw new OperationCanceledException("Could not create a new user, some fields may be invalid");
+                }
+
+                var GetUser = _userDAO.Get(IdUser);
+                if (GetUser == null)
+                {
+                    throw new OperationCanceledException("We couldn't find user with that id");
+                }
+
+                GetUser.UserName = Name;
+                GetUser.Email = Email;
+                GetUser.CPF = CPF;
+                GetUser.Password = Password;
+                GetUser.Phone = Phone;
+                GetUser.BarberAdmin = IsAdminBarber;
+
+                var SalvedUser = _userDAO.Update(GetUser);
+                return SalvedUser;
+               
+            }
+
+            catch (Exception ex)
+            {
+                throw new Exception("Error editing user" + ex);
+            }
         }
 
         public User UserIsValid(string Email, string Password)

@@ -85,6 +85,32 @@ namespace API_BARBEARIA.Controllers
 
         }
 
+        [HttpPatch]
+        public IActionResult UpdateUser(UpdateUserDTO UserUpdate)
+        {
+            try
+            {
+                var Update = _userManager.UpdateUser(UserUpdate);
+                return Ok(Update);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "Failed to Update, please try again."
+                });
+            }
+        }
+
+        [HttpDelete ("{IdUser}")]
+        public IActionResult DeleteUser (long Iduser)
+        {
+            var deleteUser = _userManager.DeleteUser(Iduser);
+            return Ok(deleteUser);
+        }
+
         
         
     }

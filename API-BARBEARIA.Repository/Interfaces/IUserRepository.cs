@@ -16,5 +16,7 @@ namespace API_BARBEARIA.Repository.Interfaces
         Scheduling scheduling(long IdUser, DateTime HairCurtDate, string DesiredService, string Time, BarberEnum barberEnum);
         User GetEmail(long IdUser);
         Scheduling GetScheduling(long IdUser);
+        User UpdateUser(long IdUser,string Name, string Email, string CPF, string Password, string Phone, bool IsAdminBarber);
+        string DeleteUser(long IdUser);
     }
 }
