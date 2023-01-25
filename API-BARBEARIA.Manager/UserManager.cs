@@ -138,9 +138,9 @@ namespace API_BARBEARIA.Manager
 
             }
 
-            catch(Exception ex)
+            catch
             {
-                throw new OperationCanceledException("Could not register a User! " + ex.Message);
+                throw;
             }
         }
 
@@ -157,7 +157,7 @@ namespace API_BARBEARIA.Manager
                 if (scheduling.DesiredService.Length <= 5) throw new ArgumentException("Desired Service must be more than 5 characters");
                 if (scheduling.Time.Length < 3) throw new ArgumentException("Time must be more 3 Characters");
                 if (scheduling.HairCurtDate.ToString().Length < 3) throw new ArgumentException("Hair curt date must be more 3 characters");
-                if (scheduling.IdUser == 0) throw new ArgumentException("There is no User with Iduser 0");
+                if (scheduling.IdUser <= 0) throw new ArgumentException("There is no User with Iduser 0");
                 if ( scheduling.HairCurtDate <= DateTime.Now) throw new ArgumentException("Date Invalid");
 
                
@@ -165,14 +165,14 @@ namespace API_BARBEARIA.Manager
                 //Envia dados para o repository
                 var Sendscheduling = _userRepository.scheduling(scheduling.IdUser, scheduling.HairCurtDate, scheduling.DesiredService, scheduling.Time, scheduling.barberEnum);
 
-                var email = _userRepository.GetEmail(scheduling.IdUser);
+                var GetUser = _userRepository.GetEmail(scheduling.IdUser);
        
 
-                MailMessage mailMessage = new MailMessage("barbeariadesign170@gmail.com", email.Email);
+                MailMessage mailMessage = new MailMessage("barbeariadesign170@gmail.com", GetUser.Email);
 
                 mailMessage.Subject = $"Agendamento realizado!";
                 mailMessage.IsBodyHtml = true;
-                mailMessage.Body = $"<p> Vinhemos confirmar seu agendamento dia, {scheduling.HairCurtDate.Date} as {scheduling.Time} horas, para realizar a (o): {scheduling.DesiredService}  </p>";
+                mailMessage.Body = $"<h1> Olá, {GetUser.UserName}!  </h1> <br> <p> Vinhemos confirmar que,  seu agendamento foi realizado com sucesso,  para o dia, <b> {scheduling.HairCurtDate.Date}</b> as <b> {scheduling.Time}</b> horas, para realizar o serviço desejado: <b>{scheduling.DesiredService}</b> </p> <br> <hr> <br> Te Aguardamos ansiosamente.  ";
                 mailMessage.SubjectEncoding = Encoding.GetEncoding("UTF-8");
                 mailMessage.BodyEncoding = Encoding.GetEncoding("UTF-8");
 
@@ -269,6 +269,60 @@ namespace API_BARBEARIA.Manager
 
             var delete = _userRepository.DeleteUser(IdUser);
             return $"IdUser:{IdUser} was Deleted";
+        }
+
+        public UpdateSchedulingDTO UpdateScheduling(UpdateSchedulingDTO scheduling)
+        {
+            try
+            {
+                //Validação para ver se os campos são nulos ou vazios.
+                if (string.IsNullOrEmpty(scheduling.DesiredService)) throw new ArgumentException("Desired Service can´t be empty or null");
+                if (string.IsNullOrEmpty(scheduling.Time)) throw new ArgumentException("Time can´t be empty or null");
+                if (scheduling.HairCurtDate.ToString() == "01/01/1900") throw new ArgumentException("Hair curte date can´t be empty or null");
+
+                //validação de tamanho da string
+                if (scheduling.DesiredService.Length <= 5) throw new ArgumentException("Desired Service must be more than 5 characters");
+                if (scheduling.Time.Length < 3) throw new ArgumentException("Time must be more 3 Characters");
+                if (scheduling.HairCurtDate.ToString().Length < 3) throw new ArgumentException("Hair curt date must be more 3 characters");
+                if (scheduling.IdScheduling <= 0) throw new ArgumentException("There is no User with Iduser 0");
+                if (scheduling.HairCurtDate <= DateTime.Now) throw new ArgumentException("Date Invalid");
+
+                //Envia dados para o repository
+                var updateScheduling = _userRepository.UpdateScheduling(scheduling.IdScheduling, scheduling.IdUser, scheduling.HairCurtDate, scheduling.DesiredService, scheduling.Time, scheduling.barberEnum);
+
+
+                var GetUser = _userRepository.GetEmail(scheduling.IdUser);
+
+
+                MailMessage mailMessage = new MailMessage("barbeariadesign170@gmail.com", GetUser.Email);
+
+                mailMessage.Subject = $"Agendamento Alterado com sucesso!";
+                mailMessage.IsBodyHtml = true;
+                mailMessage.Body = $"<h1> Olá, {GetUser.UserName}!  </h1> <br> <p> Vinhemos confirmar que,  seu agendamento foi alterado para o dia, <b> {scheduling.HairCurtDate.Date}</b> as <b> {scheduling.Time}</b> horas, para realizar o serviço desejado: <b>{scheduling.DesiredService}</b> </p> <br> <hr> <br> Te Aguardamos ansiosamente.  ";
+                mailMessage.SubjectEncoding = Encoding.GetEncoding("UTF-8");
+                mailMessage.BodyEncoding = Encoding.GetEncoding("UTF-8");
+
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential("barbeariadesign170@gmail.com", "psliiytyvwsrrcqb");
+
+                smtpClient.EnableSsl = true;
+
+                smtpClient.Send(mailMessage);
+
+
+
+
+                return scheduling;
+            }
+
+            catch
+            {
+                throw;
+            }
+
+
         }
     }
 }

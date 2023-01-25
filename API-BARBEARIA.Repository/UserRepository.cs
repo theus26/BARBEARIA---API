@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace API_BARBEARIA.Repository
@@ -96,63 +97,71 @@ namespace API_BARBEARIA.Repository
 
         public Scheduling scheduling(long IdUser, DateTime HairCurtDate, string DesiredService, string Time, BarberEnum barberEnum)
         {
-            if (DesiredService.Count() < 2 || Time.Count() < 2)
+            try
             {
-                throw new OperationCanceledException("Could not create a new user, some fields may be invalid");
-            }
-            var UserId = _userDAO.GetAll().Where(x => x.IdUser == IdUser);
-            if (!UserId.Any())
-            {
-                throw new OperationCanceledException("User Don´t exist");
-            }
-
-            var GetUser = _userDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
-            foreach (User user in GetUser)
-            {
-                if(user.BarberAdmin == true)
+                if (DesiredService.Count() < 2 || Time.Count() < 2)
                 {
-                    throw new Exception("It was not possible to make an appointment.");
+                    throw new OperationCanceledException("Could not create a new user, some fields may be invalid");
                 }
-            }
-            var DesiredServiceUnic = _schedulingDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
-
-            foreach(Scheduling desiredService in DesiredServiceUnic)
-            {
-                if(desiredService.DesiredService == DesiredService)
+                var UserId = _userDAO.GetAll().Where(x => x.IdUser == IdUser);
+                if (!UserId.Any())
                 {
-                    throw new Exception("service already scheduled for today");
+                    throw new OperationCanceledException("User Don´t exist");
                 }
+
+                var GetUser = _userDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
+                foreach (User user in GetUser)
+                {
+                    if (user.BarberAdmin == true)
+                    {
+                        throw new Exception("It was not possible to make an appointment.");
+                    }
+                }
+                var DesiredServiceUnic = _schedulingDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
+
+                foreach (Scheduling desiredService in DesiredServiceUnic)
+                {
+                    if (desiredService.DesiredService == DesiredService)
+                    {
+                        throw new Exception("service already scheduled for today");
+                    }
+                }
+
+                var ThereIstime = _schedulingDAO.GetAll().Where(x => x.Time == Time && x.HairCurtDate == HairCurtDate);
+
+                if (ThereIstime.Any())
+                {
+                    throw new OperationCanceledException("Date and time already scheduled, please choose another again");
+                }
+
+
+
+
+                var Salved = new Scheduling()
+                {
+                    IdUser = IdUser,
+                    Time = Time,
+                    DesiredService = DesiredService,
+                    HairCurtDate = HairCurtDate,
+                    Barber = barberEnum
+
+                };
+                _schedulingDAO.Create(Salved);
+
+                var newSalved = new Barber()
+                {
+                    IdSchedulling = Salved.IdSchedulling,
+                    Name = Salved.Barber.ToString()
+                };
+                _barberDAO.Create(newSalved);
+
+                return Salved;
             }
 
-            var ThereIstime = _schedulingDAO.GetAll().Where(x => x.Time == Time && x.HairCurtDate == HairCurtDate);
-            
-            if (ThereIstime.Any())
+            catch
             {
-                throw new OperationCanceledException("Date and time already scheduled, please choose another again");
+                throw;
             }
-            
-           
-
-
-            var Salved = new Scheduling()
-            {
-                IdUser = IdUser,
-                Time = Time,
-                DesiredService = DesiredService,
-                HairCurtDate = HairCurtDate,
-                Barber = barberEnum
-
-            };
-            _schedulingDAO.Create(Salved);
-
-            var newSalved = new Barber()
-            {
-                IdSchedulling = Salved.IdSchedulling,
-                Name = Salved.Barber.ToString()
-            };
-            _barberDAO.Create(newSalved);
-
-            return Salved;
         }
 
         public User UpdateUser(long IdUser, string Name, string Email, string CPF, string Password, string Phone, bool IsAdminBarber)
@@ -186,6 +195,85 @@ namespace API_BARBEARIA.Repository
             {
                 throw new Exception("Error editing user" + ex);
             }
+        }
+
+        public Scheduling UpdateScheduling(long IdScheduling, long IdUser, DateTime HairCurtDate, string DesiredService, string Time, BarberEnum barberEnum)
+        {
+            try
+            {
+                if (DesiredService.Count() < 2 || Time.Count() < 2)
+                {
+                    throw new OperationCanceledException("Could not create a new user, some fields may be invalid");
+                }
+
+
+                var Scheduling = _schedulingDAO.GetAll().Where(x => x.IdSchedulling == IdScheduling);
+
+                if (!Scheduling.Any())
+                {
+                    throw new OperationCanceledException("Scheduling Don´t exist");
+                }
+
+                var SeeUser = _schedulingDAO.GetAll().Where(x => x.IdUser == IdUser);
+
+                if (!SeeUser.Any())
+                {
+                    throw new OperationCanceledException("User Don´t exist");
+                }
+
+                var GetUser = _userDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
+                foreach (User user in GetUser)
+                {
+                    if (user.BarberAdmin == true)
+                    {
+                        throw new Exception("It was not possible to make an appointment.");
+                    }
+                }
+                var DesiredServiceUnic = _schedulingDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
+
+                foreach (Scheduling desiredService in DesiredServiceUnic)
+                {
+                    if (desiredService.DesiredService == DesiredService)
+                    {
+                        throw new Exception("service already scheduled for today");
+                    }
+                }
+
+                var ThereIstime = _schedulingDAO.GetAll().Where(x => x.Time == Time && x.HairCurtDate == HairCurtDate);
+
+                if (ThereIstime.Any())
+                {
+                    throw new OperationCanceledException("Date and time already scheduled, please choose another again");
+                }
+
+                var GetScheduling = _schedulingDAO.Get(IdScheduling);
+
+                if (GetScheduling.IdUser != IdUser) throw new OperationCanceledException("You cannot edit someone else's schedule.");
+
+
+                    GetScheduling.HairCurtDate = HairCurtDate;
+                    GetScheduling.DesiredService = DesiredService;
+                    GetScheduling.Time = Time;
+                    GetScheduling.Barber = barberEnum;
+
+                    var salvedUpdated = _schedulingDAO.Update(GetScheduling);
+
+                    var GetBarber = _barberDAO.GetAll().FirstOrDefault(x => x.IdSchedulling == IdScheduling);
+                    GetBarber.Name = barberEnum.ToString();
+                    _barberDAO.Update(GetBarber);
+
+
+                return GetScheduling;
+                
+                
+            }
+
+            catch 
+            {
+                throw;
+            }
+
+
         }
 
         public User UserIsValid(string Email, string Password)

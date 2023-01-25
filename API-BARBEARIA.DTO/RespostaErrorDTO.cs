@@ -10,5 +10,6 @@ namespace API_BARBEARIA.DTO
     {
         public string Error { get; set; }
         public int Status { get; set; }
+        public string Details { get; set; }
     }
 }

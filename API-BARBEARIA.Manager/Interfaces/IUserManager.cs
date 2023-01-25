@@ -17,5 +17,6 @@ namespace API_BARBEARIA.Manager.Interfaces
 
         UpdateUserDTO UpdateUser(UpdateUserDTO user);
         string DeleteUser(long IdUser);
+        UpdateSchedulingDTO UpdateScheduling(UpdateSchedulingDTO scheduling);
     }
 }

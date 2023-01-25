@@ -21,9 +21,9 @@ namespace API_BARBEARIA.Controllers
         {
             return Ok("I'm alive and working");
         }
-
-        [HttpPost]
         
+        [HttpPost]
+   
         public IActionResult RegisterUser(UserRegisterDTO userRegister)
         {
             try
@@ -39,7 +39,8 @@ namespace API_BARBEARIA.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
                 {
                     Status = StatusCodes.Status400BadRequest,
-                    Error = "There was an error registering, please try again!"
+                    Error = "There was an error registering, please try again!",
+                    Details = ex.Message
                 });
             }
         }
@@ -79,7 +80,8 @@ namespace API_BARBEARIA.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
                 {
                     Status = StatusCodes.Status400BadRequest,
-                    Error = "Failed to schedule, please try again."
+                    Error = "Failed to schedule, please try again.",
+                    Details = ex.Message
                 });
             }
 
@@ -89,7 +91,7 @@ namespace API_BARBEARIA.Controllers
         public IActionResult UpdateUser(UpdateUserDTO UserUpdate)
         {
             try
-            {
+            {//Estou recebendo os dados do user e será validado no manager
                 var Update = _userManager.UpdateUser(UserUpdate);
                 return Ok(Update);
             }
@@ -99,7 +101,8 @@ namespace API_BARBEARIA.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
                 {
                     Status = StatusCodes.Status400BadRequest,
-                    Error = "Failed to Update, please try again."
+                    Error = "Failed to Update, please try again.",
+                    Details  = ex.Message 
                 });
             }
         }
@@ -107,10 +110,44 @@ namespace API_BARBEARIA.Controllers
         [HttpDelete ("{IdUser}")]
         public IActionResult DeleteUser (long Iduser)
         {
-            var deleteUser = _userManager.DeleteUser(Iduser);
-            return Ok(deleteUser);
+            try
+            {
+                var deleteUser = _userManager.DeleteUser(Iduser);
+                return Ok(deleteUser);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "Failed to Delete, please try again.",
+                    Details = ex.Message
+                });
+            }
+
         }
 
+
+        [HttpPatch]
+        public IActionResult UpdateScheduling(UpdateSchedulingDTO updateScheduling)
+        {
+            try
+            {
+                var SchedulingUpdate = _userManager.UpdateScheduling(updateScheduling);
+                return Ok(SchedulingUpdate);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "Failed to Update, please try again",
+                    Details = ex.Message
+                });
+            }
+        }
         
         
     }
