@@ -5,6 +5,7 @@ using API_BARBEARIA.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Numerics;
 using System.Text;
 using System.Text.Json.Nodes;
@@ -121,11 +122,42 @@ namespace API_BARBEARIA.Repository
 
                 foreach (Scheduling desiredService in DesiredServiceUnic)
                 {
-                    if (desiredService.DesiredService == DesiredService)
+                    if(desiredService.SchedulingCompleted == true)
                     {
-                        throw new Exception("service already scheduled for today");
+                        if (desiredService.DesiredService == DesiredService)
+                        {
+                            throw new Exception("service already scheduled for today");
+                        }
                     }
-                }
+
+                    var ThereIstimes = _schedulingDAO.GetAll().Where(x => x.Time == Time && x.HairCurtDate == HairCurtDate);
+
+                    if (ThereIstimes.Any())
+                    {
+                        throw new OperationCanceledException("Date and time already scheduled, please choose another again");
+                    }
+                    var Salveds = new Scheduling()
+                        {
+                            IdUser = IdUser,
+                            Time = Time,
+                            DesiredService = DesiredService,
+                            HairCurtDate = HairCurtDate,
+                            Barber = barberEnum
+
+                        };
+                        _schedulingDAO.Create(Salveds);
+
+                        var newSalveds = new Barber()
+                        {
+                            IdSchedulling = Salveds.IdSchedulling,
+                            Name = Salveds.Barber.ToString()
+                        };
+                        _barberDAO.Create(newSalveds);
+
+                        return Salveds;
+                    }
+                    
+                
 
                 var ThereIstime = _schedulingDAO.GetAll().Where(x => x.Time == Time && x.HairCurtDate == HairCurtDate);
 
@@ -206,6 +238,8 @@ namespace API_BARBEARIA.Repository
                     throw new OperationCanceledException("Could not create a new user, some fields may be invalid");
                 }
 
+                var GetAgendate = _schedulingDAO.Get(IdScheduling);
+                if (GetAgendate.SchedulingCompleted == true) throw new ArgumentException("This appointment has already been completed.");
 
                 var Scheduling = _schedulingDAO.GetAll().Where(x => x.IdSchedulling == IdScheduling);
 
@@ -285,6 +319,71 @@ namespace API_BARBEARIA.Repository
             }
             return User;
 
+        }
+
+        public string DeleteScheduling(long IdScheduling)
+        {
+            var ThereIsUser = _schedulingDAO.GetAll().Where(x => x.IdSchedulling == IdScheduling);
+            if (!ThereIsUser.Any())
+            {
+                throw new OperationCanceledException($"Could not find any with the given Id {IdScheduling}");
+            }
+            _schedulingDAO.Delete(IdScheduling);
+           
+            return $"Schedullig:{IdScheduling} was Deleted";
+        }
+
+        public string SchedulingCompleted(long IdScheduling, bool SchedulingCompleted)
+        {
+            try
+            {
+                var Scheduling = _schedulingDAO.GetAll().Where(x => x.IdSchedulling == IdScheduling);
+
+                if (!Scheduling.Any())
+                {
+                    throw new OperationCanceledException("Scheduling Don´t exist");
+                }
+
+                var GetScheduling = _schedulingDAO.GetAll().FirstOrDefault(x => x.IdSchedulling == IdScheduling);
+                if (GetScheduling != null)
+                {
+                    if (GetScheduling.SchedulingCompleted == true) throw new ArgumentException("appointment has already been completed");
+                     GetScheduling.SchedulingCompleted = SchedulingCompleted;
+                     var salved = _schedulingDAO.Update(GetScheduling);
+                    return "Scheduling completed successfully";
+                }
+                return "unable to finalize appointment";
+
+
+            }
+
+            catch
+            {
+                throw;
+            }
+        }
+
+        public List <Scheduling> GetAllScheduling()
+        {
+            var GetAllScheduling = _schedulingDAO.GetAll().ToList();
+            return GetAllScheduling;
+        }
+
+        public List<User> GetallUsers()
+        {
+            var  GetAllUsers = _userDAO.GetAll().ToList();
+            return GetAllUsers;
+        }
+
+        public List<Scheduling> GetSchedulingPerId(long IdUser)
+        {
+            var UserId = _userDAO.GetAll().Where(x => x.IdUser == IdUser);
+            if (!UserId.Any())
+            {
+                throw new OperationCanceledException("User Don´t exist");
+            }
+            var getAll = _schedulingDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
+            return getAll;
         }
     }
 }

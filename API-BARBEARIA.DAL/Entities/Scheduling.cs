@@ -22,6 +22,8 @@ namespace API_BARBEARIA.DAL.Entities
         public string Time { get; set; }
         [Required]
         public BarberEnum Barber { get; set; }
+        [Required]
+        public bool SchedulingCompleted { get; set; }
 
         [ForeignKey("IdUser")]
         public virtual User user { get; set; }

@@ -52,6 +52,7 @@ namespace API_BARBEARIA.Manager
                 //Verifica se a algum usuario
                 var userValid = _userRepository.UserIsValid(login.Email, password);
 
+
                 //pegar os dados para gerar o Token
                 var userToken = new User()
                 {
@@ -68,8 +69,8 @@ namespace API_BARBEARIA.Manager
                     Message = "Successful login",
                     IdUser = userValid.IdUser,
                     Token = token,
-                    IsBarber = userValid.BarberAdmin
-
+                    IsBarber = userValid.BarberAdmin,
+                     UserName = userValid.UserName,
                 };
 
                 return MessageSucess;
@@ -323,6 +324,52 @@ namespace API_BARBEARIA.Manager
             }
 
 
+        }
+
+        public string DeleteScheduling(long IdScheduling)
+        {
+            if (IdScheduling <= 0)
+            {
+                throw new ArgumentException("Invalid UserID");
+            }
+
+            var delete = _userRepository.DeleteScheduling(IdScheduling);
+            return $"Scheduling: {IdScheduling} was Deleted";
+        }
+
+        public string CompletedScheduling(SchedulingCompletedDTO schedulingCompleted)
+        {
+            try
+            {
+                if (schedulingCompleted != null)
+                {
+                    var SchedulingCompleted = _userRepository.SchedulingCompleted(schedulingCompleted.IdScheduling, schedulingCompleted.SchedulingCompleted);
+                    return "Scheduling completed successfully";
+                }
+
+                return "unable to finalize appointment";
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        public List<Scheduling> GetallScheduling()
+        {
+            var getScheduling = _userRepository.GetAllScheduling();
+            return getScheduling;
+        }
+
+        public List<User> GetallUsers()
+        {
+            var GetAllUsers = _userRepository.GetallUsers();
+            return GetAllUsers;
+        }
+
+        public List<Scheduling> GetScgedulingPerId(long IdUser)
+        {
+            var GetSchedulingPerUser = _userRepository.GetSchedulingPerId(IdUser);
+            return GetSchedulingPerUser;
         }
     }
 }

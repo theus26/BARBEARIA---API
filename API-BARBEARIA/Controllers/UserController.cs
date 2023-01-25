@@ -91,7 +91,8 @@ namespace API_BARBEARIA.Controllers
         public IActionResult UpdateUser(UpdateUserDTO UserUpdate)
         {
             try
-            {//Estou recebendo os dados do user e será validado no manager
+            {
+                //Recebe os dados e enviar ao manager para validar e editar usuario
                 var Update = _userManager.UpdateUser(UserUpdate);
                 return Ok(Update);
             }
@@ -112,6 +113,7 @@ namespace API_BARBEARIA.Controllers
         {
             try
             {
+                //Deletar usuario pelo seu Id
                 var deleteUser = _userManager.DeleteUser(Iduser);
                 return Ok(deleteUser);
             }
@@ -134,6 +136,7 @@ namespace API_BARBEARIA.Controllers
         {
             try
             {
+                //Recebe os dados e enviar ao manager para validar e editar agendamento
                 var SchedulingUpdate = _userManager.UpdateScheduling(updateScheduling);
                 return Ok(SchedulingUpdate);
             }
@@ -148,7 +151,109 @@ namespace API_BARBEARIA.Controllers
                 });
             }
         }
-        
-        
+
+        [HttpDelete ("{IdScheduling}")]
+        public IActionResult DeleteScheduling(long IdScheduling)
+        {
+            try
+            {
+                //Apaga agendamento pelo Id do agendamento
+                var DeleteScheduling = _userManager.DeleteScheduling(IdScheduling);
+                return Ok(DeleteScheduling);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "Failed to Delete, please try again",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult SchedulingCompleted(SchedulingCompletedDTO schedulingCompleted)
+        {
+            try
+            {
+                //Estou recebendo os dados do user e será validado no manager
+                var CompletedScheduling = _userManager.CompletedScheduling(schedulingCompleted);
+                return Ok(CompletedScheduling);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "Failed to Completed Scheduling, please try again",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetAllScheduling()
+        {
+            try
+            {
+                var getScheduling = _userManager.GetallScheduling();
+                return Ok(getScheduling);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "Failed to get all scheduling, please try again",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetAllUsers()
+        {
+            try
+            {
+                var getUsers = _userManager.GetallUsers();
+                return Ok(getUsers);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "Failed to get all Users, please try again",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("{IdUser}")]
+        public IActionResult GetSchedulingPerIdUser(long IdUser)
+        {
+            try
+            {
+                var getSchedulingPerUser = _userManager.GetScgedulingPerId(IdUser);
+                return Ok(getSchedulingPerUser);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "Failed to get Scheduling per Id, please try again",
+                    Details = ex.Message
+                });
+            }
+
+        }
+
     }
 }

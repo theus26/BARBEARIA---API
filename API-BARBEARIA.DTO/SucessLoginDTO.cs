@@ -1,4 +1,5 @@
-﻿using System;
+﻿using API_BARBEARIA.DAL.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,7 @@ namespace API_BARBEARIA.DTO
         public string Token { get; set; }
         public long IdUser { get; set; }
         public bool IsBarber { get; set; }
+        public string UserName { get; set; }
+        
     }
 }
