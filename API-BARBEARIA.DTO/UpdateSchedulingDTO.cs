@@ -14,13 +14,12 @@ namespace API_BARBEARIA.DTO
         public long IdUser { get; set; }
         [Required]
         public long IdScheduling { get; set; }
-        [Required]
+     
         public DateTime HairCurtDate { get; set; }
-        [Required]
+      
         public string DesiredService { get; set; }
-        [Required]
+      
         public string Time { get; set; }
-        [Required]
-        public BarberEnum barberEnum { get; set; }
+      public BarberEnum barberEnum { get; set; }
     }
 }

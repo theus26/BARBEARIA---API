@@ -24,5 +24,6 @@ namespace API_BARBEARIA.Repository.Interfaces
         List<Scheduling> GetAllScheduling();
         List<User> GetallUsers();
         List<Scheduling> GetSchedulingPerId(long IdUser);
+        string WarnigsRoutine();
     }
 }

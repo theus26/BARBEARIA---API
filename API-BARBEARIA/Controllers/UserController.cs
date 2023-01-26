@@ -255,5 +255,12 @@ namespace API_BARBEARIA.Controllers
 
         }
 
+
+        [HttpGet]
+        public IActionResult WarningRoutine()
+        {
+            var SendEmails = _userManager.WarningsRoutine();
+            return Ok(SendEmails);
+        }
     }
 }

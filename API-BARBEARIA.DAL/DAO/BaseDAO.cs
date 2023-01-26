@@ -80,12 +80,12 @@ namespace API_BARBEARIA.DAL.DAO
 
         }
 
-        public object Get(string v)
+        public object GetAll(DateTime d)
         {
-            var obj = _context.Set<T>().Find(v);
+            var obj = _context.Set<T>().Find(d);
             if (obj == null)
             {
-                throw new OperationCanceledException("Could not find any with the given Id");
+                throw new OperationCanceledException("Could not find any with the given Date");
             }
             return obj;
         }

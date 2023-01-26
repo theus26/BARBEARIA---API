@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Mail;
+using System.Net;
 using System.Numerics;
 using System.Text;
 using System.Text.Json.Nodes;
@@ -384,6 +386,41 @@ namespace API_BARBEARIA.Repository
             }
             var getAll = _schedulingDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
             return getAll;
+        }
+
+        public string WarnigsRoutine()
+        {
+            var date = DateTime.Now;
+            var IdUser = 0 ;
+            var getScheduling = _schedulingDAO.GetAll().Where(x => x.HairCurtDate.Date == date.Date && x.SchedulingCompleted == false).ToList();
+            if (getScheduling != null)
+            {
+            foreach(Scheduling scheduling in getScheduling)
+            {
+                IdUser = (int)scheduling.IdUser;
+                var GetUsers = _userDAO.GetAll().FirstOrDefault(x => x.IdUser == IdUser);
+                    MailMessage mailMessage = new MailMessage("barbeariadesign628@gmail.com", GetUsers.Email);
+
+                    mailMessage.Subject = $"Comunicado de Aviso!";
+                    mailMessage.IsBodyHtml = true;
+                    mailMessage.Body = $"<h1> Olá, {GetUsers.UserName}!  </h1> <br> <p> Vinhemos informa que, seu agendamento é hoje dia <b> {scheduling.HairCurtDate.Date.Day}</b> as <b> {scheduling.Time}</b> horas, para realizar o serviço desejado: <b>{scheduling.DesiredService}.</b> </p> <br> <button> Confirmar Presença </button> <br> <hr> <br> Te Aguardamos ansiosamente.  ";
+                    mailMessage.SubjectEncoding = Encoding.GetEncoding("UTF-8");
+                    mailMessage.BodyEncoding = Encoding.GetEncoding("UTF-8");
+
+                    SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+
+                    smtpClient.UseDefaultCredentials = false;
+                    smtpClient.Credentials = new NetworkCredential("barbeariadesign628@gmail.com", "xlbgbmrhrhjkfnzt");
+
+                    smtpClient.EnableSsl = true;
+
+                    smtpClient.Send(mailMessage);
+
+                }
+            }
+            
+            return "sucess";
+
         }
     }
 }

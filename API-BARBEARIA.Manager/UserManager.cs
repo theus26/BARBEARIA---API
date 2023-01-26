@@ -169,7 +169,7 @@ namespace API_BARBEARIA.Manager
                 var GetUser = _userRepository.GetEmail(scheduling.IdUser);
        
 
-                MailMessage mailMessage = new MailMessage("barbeariadesign170@gmail.com", GetUser.Email);
+                MailMessage mailMessage = new MailMessage("barbeariadesign628@gmail.com", GetUser.Email);
 
                 mailMessage.Subject = $"Agendamento realizado!";
                 mailMessage.IsBodyHtml = true;
@@ -180,7 +180,7 @@ namespace API_BARBEARIA.Manager
                 SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
 
                 smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new NetworkCredential("barbeariadesign170@gmail.com", "psliiytyvwsrrcqb");
+                smtpClient.Credentials = new NetworkCredential("barbeariadesign628@gmail.com", "xlbgbmrhrhjkfnzt");
 
                 smtpClient.EnableSsl = true;
 
@@ -282,7 +282,7 @@ namespace API_BARBEARIA.Manager
                 if (scheduling.HairCurtDate.ToString() == "01/01/1900") throw new ArgumentException("Hair curte date can´t be empty or null");
 
                 //validação de tamanho da string
-                if (scheduling.DesiredService.Length <= 5) throw new ArgumentException("Desired Service must be more than 5 characters");
+                if (scheduling.DesiredService.Length < 5) throw new ArgumentException("Desired Service must be more than 5 characters");
                 if (scheduling.Time.Length < 3) throw new ArgumentException("Time must be more 3 Characters");
                 if (scheduling.HairCurtDate.ToString().Length < 3) throw new ArgumentException("Hair curt date must be more 3 characters");
                 if (scheduling.IdScheduling <= 0) throw new ArgumentException("There is no User with Iduser 0");
@@ -295,7 +295,7 @@ namespace API_BARBEARIA.Manager
                 var GetUser = _userRepository.GetEmail(scheduling.IdUser);
 
 
-                MailMessage mailMessage = new MailMessage("barbeariadesign170@gmail.com", GetUser.Email);
+                MailMessage mailMessage = new MailMessage("barbeariadesign628@gmail.com", GetUser.Email);
 
                 mailMessage.Subject = $"Agendamento Alterado com sucesso!";
                 mailMessage.IsBodyHtml = true;
@@ -306,7 +306,7 @@ namespace API_BARBEARIA.Manager
                 SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
 
                 smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new NetworkCredential("barbeariadesign170@gmail.com", "psliiytyvwsrrcqb");
+                smtpClient.Credentials = new NetworkCredential("barbeariadesign628@gmail.com", "xlbgbmrhrhjkfnzt");
 
                 smtpClient.EnableSsl = true;
 
@@ -370,6 +370,12 @@ namespace API_BARBEARIA.Manager
         {
             var GetSchedulingPerUser = _userRepository.GetSchedulingPerId(IdUser);
             return GetSchedulingPerUser;
+        }
+
+        public string WarningsRoutine()
+        {
+            var Routine = _userRepository.WarnigsRoutine();
+            return "Sucess";
         }
     }
 }
