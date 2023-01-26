@@ -113,6 +113,8 @@ namespace API_BARBEARIA.Repository
                 }
 
                 var GetUser = _userDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
+
+                //Procurar pelo o usuario e verifica se ele é admin, caso seja retornar um erro.
                 foreach (User user in GetUser)
                 {
                     if (user.BarberAdmin == true)
@@ -122,10 +124,12 @@ namespace API_BARBEARIA.Repository
                 }
                 var DesiredServiceUnic = _schedulingDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
 
+                // Procurar agendamentos concluidos, caso haja ele permite um novo cadastro na mesma data e horario.
                 foreach (Scheduling desiredService in DesiredServiceUnic)
                 {
                     if(desiredService.SchedulingCompleted == true)
                     {
+                        //Valida se o usuario já não tem esse serviço agendado
                         if (desiredService.DesiredService == DesiredService)
                         {
                             throw new Exception("service already scheduled for today");
@@ -158,18 +162,14 @@ namespace API_BARBEARIA.Repository
 
                         return Salveds;
                     }
-                    
-                
 
+                //Caso o cliente não tenha concluido o serviço ele faz novamente a validação para poder salvar.    
                 var ThereIstime = _schedulingDAO.GetAll().Where(x => x.Time == Time && x.HairCurtDate == HairCurtDate);
 
                 if (ThereIstime.Any())
                 {
                     throw new OperationCanceledException("Date and time already scheduled, please choose another again");
                 }
-
-
-
 
                 var Salved = new Scheduling()
                 {

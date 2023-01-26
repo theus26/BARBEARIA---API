@@ -165,10 +165,10 @@ namespace API_BARBEARIA.Manager
 
                 //Envia dados para o repository
                 var Sendscheduling = _userRepository.scheduling(scheduling.IdUser, scheduling.HairCurtDate, scheduling.DesiredService, scheduling.Time, scheduling.barberEnum);
-
+                //Pega usuario pelo id para poder pegar algumas informações.
                 var GetUser = _userRepository.GetEmail(scheduling.IdUser);
        
-
+                //Envia o email de confirmação para usuario
                 MailMessage mailMessage = new MailMessage("barbeariadesign628@gmail.com", GetUser.Email);
 
                 mailMessage.Subject = $"Agendamento realizado!";
@@ -247,8 +247,10 @@ namespace API_BARBEARIA.Manager
                 var PasswordMatches = PasswordParser.Matches(user.Password);
                 if (PasswordMatches.Count == 0) throw new ArgumentException("Please password must contain letters and numbers");
 
+                // Gerar o hash da senha 
                 var password = MD5Helper.CreateHashMd5(user.Password);
 
+                //Enviar os novos dados para serem salvos
                 var EditUser = _userRepository.UpdateUser(user.IdUser, user.Name, user.Email, user.CPF, password, user.Phone, user.IsBarberAdmin);
 
                 return user;
@@ -267,7 +269,7 @@ namespace API_BARBEARIA.Manager
             {
                 throw new ArgumentException("Invalid UserID");
             }
-
+            //Enviar o id do usuario para deleta-lo
             var delete = _userRepository.DeleteUser(IdUser);
             return $"IdUser:{IdUser} was Deleted";
         }
@@ -285,16 +287,15 @@ namespace API_BARBEARIA.Manager
                 if (scheduling.DesiredService.Length < 5) throw new ArgumentException("Desired Service must be more than 5 characters");
                 if (scheduling.Time.Length < 3) throw new ArgumentException("Time must be more 3 Characters");
                 if (scheduling.HairCurtDate.ToString().Length < 3) throw new ArgumentException("Hair curt date must be more 3 characters");
-                if (scheduling.IdScheduling <= 0) throw new ArgumentException("There is no User with Iduser 0");
                 if (scheduling.HairCurtDate <= DateTime.Now) throw new ArgumentException("Date Invalid");
 
                 //Envia dados para o repository
                 var updateScheduling = _userRepository.UpdateScheduling(scheduling.IdScheduling, scheduling.IdUser, scheduling.HairCurtDate, scheduling.DesiredService, scheduling.Time, scheduling.barberEnum);
-
-
+                
+                //Pega as informações do usuario.
                 var GetUser = _userRepository.GetEmail(scheduling.IdUser);
 
-
+                //Envia o email notificando ao usuario
                 MailMessage mailMessage = new MailMessage("barbeariadesign628@gmail.com", GetUser.Email);
 
                 mailMessage.Subject = $"Agendamento Alterado com sucesso!";
@@ -311,9 +312,6 @@ namespace API_BARBEARIA.Manager
                 smtpClient.EnableSsl = true;
 
                 smtpClient.Send(mailMessage);
-
-
-
 
                 return scheduling;
             }
@@ -332,7 +330,7 @@ namespace API_BARBEARIA.Manager
             {
                 throw new ArgumentException("Invalid UserID");
             }
-
+            //Enviar o id para deletar agendamento
             var delete = _userRepository.DeleteScheduling(IdScheduling);
             return $"Scheduling: {IdScheduling} was Deleted";
         }
@@ -341,6 +339,7 @@ namespace API_BARBEARIA.Manager
         {
             try
             {
+                //Ver se os campos são validos e enviar para poder finalizar o agendamento
                 if (schedulingCompleted != null)
                 {
                     var SchedulingCompleted = _userRepository.SchedulingCompleted(schedulingCompleted.IdScheduling, schedulingCompleted.SchedulingCompleted);
@@ -356,24 +355,28 @@ namespace API_BARBEARIA.Manager
         }
         public List<Scheduling> GetallScheduling()
         {
+            //Pegar todos os agendamentos
             var getScheduling = _userRepository.GetAllScheduling();
             return getScheduling;
         }
 
         public List<User> GetallUsers()
         {
+            //pegar todos os usuarios.
             var GetAllUsers = _userRepository.GetallUsers();
             return GetAllUsers;
         }
 
         public List<Scheduling> GetScgedulingPerId(long IdUser)
         {
+            //Pegar agendamento por usuario.
             var GetSchedulingPerUser = _userRepository.GetSchedulingPerId(IdUser);
             return GetSchedulingPerUser;
         }
 
         public string WarningsRoutine()
         {
+            //Rotina de envio de email, enviar email para cada usuario que tenha o agendamento do dia.
             var Routine = _userRepository.WarnigsRoutine();
             return "Sucess";
         }

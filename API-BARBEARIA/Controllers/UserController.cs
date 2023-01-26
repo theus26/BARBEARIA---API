@@ -16,6 +16,7 @@ namespace API_BARBEARIA.Controllers
            
 
         }
+        
         [HttpGet]
         public ActionResult HealthCheck()
         {
@@ -259,8 +260,24 @@ namespace API_BARBEARIA.Controllers
         [HttpGet]
         public IActionResult WarningRoutine()
         {
-            var SendEmails = _userManager.WarningsRoutine();
-            return Ok(SendEmails);
+            try
+            {
+                var SendEmails = _userManager.WarningsRoutine();
+                return Ok(SendEmails);
+
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "Failed to send notifications, please try again",
+                    Details = ex.Message
+                });
+            }
+
         }
     }
-}
+    }
+
