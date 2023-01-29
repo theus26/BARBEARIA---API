@@ -25,5 +25,9 @@ namespace API_BARBEARIA.Repository.Interfaces
         List<User> GetallUsers();
         List<Scheduling> GetSchedulingPerId(long IdUser);
         string WarnigsRoutine();
+        Sessions CreateSession(long IdUser, string Token);
+        Sessions SeeTokenValid(string Token);
+        string Logout(long IdUser, string token);
+
     }
 }

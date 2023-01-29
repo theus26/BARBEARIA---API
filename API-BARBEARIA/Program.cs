@@ -18,6 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IDAO<User>, UserDAO>();
 builder.Services.AddScoped<IDAO<Scheduling>, BaseDAO<Scheduling>>();
 builder.Services.AddScoped<IDAO<Barber>, BaseDAO<Barber>>();
+builder.Services.AddScoped<IDAO<Sessions>, BaseDAO<Sessions>>();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 

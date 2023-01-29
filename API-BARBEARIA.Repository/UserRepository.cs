@@ -20,12 +20,14 @@ namespace API_BARBEARIA.Repository
         private readonly IDAO<User> _userDAO;
         private readonly IDAO<Scheduling> _schedulingDAO;
         private readonly IDAO<Barber> _barberDAO;
+        private readonly IDAO<Sessions> _sessionDAO;
 
-        public UserRepository(IDAO<User> userDAO, IDAO<Scheduling> schedulingDAO, IDAO<Barber> barberDAO)
+        public UserRepository(IDAO<User> userDAO, IDAO<Scheduling> schedulingDAO, IDAO<Barber> barberDAO, IDAO<Sessions> sessionDAO)
         {
             _userDAO = userDAO;
             _schedulingDAO = schedulingDAO;
             _barberDAO = barberDAO;
+            _sessionDAO = sessionDAO;
         }
 
         public string DeleteUser(long IdUser)
@@ -390,36 +392,126 @@ namespace API_BARBEARIA.Repository
 
         public string WarnigsRoutine()
         {
-            var date = DateTime.Now;
-            var IdUser = 0 ;
-            var getScheduling = _schedulingDAO.GetAll().Where(x => x.HairCurtDate.Date == date.Date && x.SchedulingCompleted == false).ToList();
-            if (getScheduling != null)
+            try
             {
-            foreach(Scheduling scheduling in getScheduling)
+
+                var date = DateTime.Now;
+                var IdUser = 0 ;
+                var getScheduling = _schedulingDAO.GetAll().Where(x => x.HairCurtDate.Date == date.Date && x.SchedulingCompleted == false).ToList();
+                if (getScheduling != null)
+                {
+                foreach(Scheduling scheduling in getScheduling)
+                {
+                    IdUser = (int)scheduling.IdUser;
+                    var GetUsers = _userDAO.GetAll().FirstOrDefault(x => x.IdUser == IdUser);
+                        MailMessage mailMessage = new MailMessage("barbeariadesign628@gmail.com", GetUsers.Email);
+
+                        mailMessage.Subject = $"Comunicado de Aviso!";
+                        mailMessage.IsBodyHtml = true;
+                        mailMessage.Body = $"<h1> Olá, {GetUsers.UserName}!  </h1> <br> <p> Vinhemos informa que, seu agendamento é hoje dia <b> {scheduling.HairCurtDate.Date.Day}</b> as <b> {scheduling.Time}</b> horas, para realizar o serviço desejado: <b>{scheduling.DesiredService}.</b> </p> <br> <button> Confirmar Presença </button> <br> <hr> <br> Te Aguardamos ansiosamente.  ";
+                        mailMessage.SubjectEncoding = Encoding.GetEncoding("UTF-8");
+                        mailMessage.BodyEncoding = Encoding.GetEncoding("UTF-8");
+
+                        SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+
+                        smtpClient.UseDefaultCredentials = false;
+                        smtpClient.Credentials = new NetworkCredential("barbeariadesign628@gmail.com", "xlbgbmrhrhjkfnzt");
+
+                        smtpClient.EnableSsl = true;
+
+                        smtpClient.Send(mailMessage);
+                        return "sucess";
+
+                    }
+            }
+                    return "Error";
+            }
+            catch
             {
-                IdUser = (int)scheduling.IdUser;
-                var GetUsers = _userDAO.GetAll().FirstOrDefault(x => x.IdUser == IdUser);
-                    MailMessage mailMessage = new MailMessage("barbeariadesign628@gmail.com", GetUsers.Email);
-
-                    mailMessage.Subject = $"Comunicado de Aviso!";
-                    mailMessage.IsBodyHtml = true;
-                    mailMessage.Body = $"<h1> Olá, {GetUsers.UserName}!  </h1> <br> <p> Vinhemos informa que, seu agendamento é hoje dia <b> {scheduling.HairCurtDate.Date.Day}</b> as <b> {scheduling.Time}</b> horas, para realizar o serviço desejado: <b>{scheduling.DesiredService}.</b> </p> <br> <button> Confirmar Presença </button> <br> <hr> <br> Te Aguardamos ansiosamente.  ";
-                    mailMessage.SubjectEncoding = Encoding.GetEncoding("UTF-8");
-                    mailMessage.BodyEncoding = Encoding.GetEncoding("UTF-8");
-
-                    SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
-
-                    smtpClient.UseDefaultCredentials = false;
-                    smtpClient.Credentials = new NetworkCredential("barbeariadesign628@gmail.com", "xlbgbmrhrhjkfnzt");
-
-                    smtpClient.EnableSsl = true;
-
-                    smtpClient.Send(mailMessage);
-
-                }
+                throw;
             }
             
-            return "sucess";
+          
+
+        }
+
+        public Sessions CreateSession(long IdUser, string Token)
+        {
+            var UserId = _userDAO.GetAll().Where(x => x.IdUser == IdUser);
+            if (!UserId.Any())
+            {
+                throw new OperationCanceledException("User Don´t exist");
+            }
+
+            var salvedSessio = new Sessions()
+            {
+                IdUser = IdUser,
+                Token = Token,
+                LoginDate = DateTime.Now,
+                SessionFinalized = false
+            };
+            var SessionCreate = _sessionDAO.Create(salvedSessio);
+            return SessionCreate;
+        }
+
+        public Sessions SeeTokenValid(string Token)
+        {
+            try
+            {
+
+            var GetSession = _sessionDAO.GetAll().FirstOrDefault(x => x.Token == Token);
+            if (GetSession.SessionFinalized == true) throw new ArgumentException("Session Invalid, Session was finalized");
+            if (GetSession != null)
+            {
+                var subtract = DateTime.Now.Day - GetSession.LoginDate.Day;
+                if (subtract > 1)
+                {
+                    GetSession.LogoutDate = DateTime.Now;
+                    GetSession.SessionFinalized = true;
+                    var salved = _sessionDAO.Update(GetSession);
+                    return salved;
+                }
+
+            }
+                    GetSession = null;
+                    return GetSession;
+            }
+            catch
+            {
+                throw;
+            }
+            
+        }
+
+        public string Logout(long IdUser, string token)
+        {
+            try
+            {
+                var VerifySession = _sessionDAO.GetAll().Where(x => x.IdUser == IdUser && x.SessionFinalized == false);
+                if (!VerifySession.Any())
+                {
+                    throw new ArgumentException("Sessios has finalized");
+                }
+                var UserId = _sessionDAO.GetAll().Where(x => x.IdUser == IdUser && x.Token == token && x.SessionFinalized == false);
+                if (UserId.Any())
+                {
+                    var GetSession = _sessionDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
+                    foreach (Sessions sessions in GetSession)
+                    {
+                        sessions.SessionFinalized = true;
+                        sessions.LogoutDate = DateTime.Now;
+                        var salved = _sessionDAO.Update(sessions);
+                    }
+
+                }
+                    return "Session Finalized sucessufuly";
+               
+            }
+            catch
+            {
+                throw;
+            }
+
 
         }
     }

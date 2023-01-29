@@ -73,6 +73,8 @@ namespace API_BARBEARIA.Manager
                      UserName = userValid.UserName,
                 };
 
+                var salvedSession = _userRepository.CreateSession(MessageSucess.IdUser, token);
+
                 return MessageSucess;
 
             }
@@ -379,6 +381,21 @@ namespace API_BARBEARIA.Manager
             //Rotina de envio de email, enviar email para cada usuario que tenha o agendamento do dia.
             var Routine = _userRepository.WarnigsRoutine();
             return "Sucess";
+        }
+
+        public string Logout(LogoutDTO logout)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(logout.Token)) throw new ArgumentException("Token can't be empty or null");
+                var Logof = _userRepository.Logout(logout.IdUser, logout.Token);
+                return "Session Finalized has sucessulify";
+
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

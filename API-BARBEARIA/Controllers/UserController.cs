@@ -1,4 +1,5 @@
-﻿using API_BARBEARIA.DTO;
+﻿using API_BARBEARIA.Attributes;
+using API_BARBEARIA.DTO;
 using API_BARBEARIA.Manager.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace API_BARBEARIA.Controllers
            
 
         }
-        
+        [AuthAttributes]
         [HttpGet]
         public ActionResult HealthCheck()
         {
@@ -277,6 +278,27 @@ namespace API_BARBEARIA.Controllers
                 });
             }
 
+        }
+
+        [HttpPost]
+        public IActionResult Logout(LogoutDTO logout)
+        {
+            try
+            {
+                var logof = _userManager.Logout(logout);
+                return Ok(logof);
+
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "Failed to finalized session, please try again",
+                    Details = ex.Message
+                });
+            }
         }
     }
     }

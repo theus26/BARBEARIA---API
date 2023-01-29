@@ -89,5 +89,15 @@ namespace API_BARBEARIA.DAL.DAO
             }
             return obj;
         }
+
+        public object GetAll(string v)
+        {
+            var obj = _context.Set<T>().Find(v);
+            if (obj == null)
+            {
+                throw new OperationCanceledException("Could not find any with the given Token");
+            }
+            return obj;
+        }
     }
 }

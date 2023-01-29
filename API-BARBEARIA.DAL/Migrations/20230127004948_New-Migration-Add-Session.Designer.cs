@@ -3,6 +3,7 @@ using System;
 using API_BARBEARIA.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_BARBEARIA.DAL.Migrations
 {
     [DbContext(typeof(BarbeariaContext))]
-    partial class BarbeariaContextModelSnapshot : ModelSnapshot
+    [Migration("20230127004948_New-Migration-Add-Session")]
+    partial class NewMigrationAddSession
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

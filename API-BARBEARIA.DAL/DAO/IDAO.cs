@@ -15,6 +15,7 @@ namespace API_BARBEARIA.DAL.DAO
             T Get(long id);
             IEnumerable<T> GetAll();
             object GetAll(DateTime d);
+            object GetAll(string v);
         }
     }
 
