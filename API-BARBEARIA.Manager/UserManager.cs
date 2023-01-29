@@ -378,9 +378,18 @@ namespace API_BARBEARIA.Manager
 
         public string WarningsRoutine()
         {
-            //Rotina de envio de email, enviar email para cada usuario que tenha o agendamento do dia.
-            var Routine = _userRepository.WarnigsRoutine();
-            return "Sucess";
+            try
+            {
+                //Rotina de envio de email, enviar email para cada usuario que tenha o agendamento do dia.
+                var Routine = _userRepository.WarnigsRoutine();
+                return "Sucess";
+
+            }
+            catch
+            {
+                throw;
+            }
+            
         }
 
         public string Logout(LogoutDTO logout)

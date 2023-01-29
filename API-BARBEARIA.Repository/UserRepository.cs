@@ -397,6 +397,11 @@ namespace API_BARBEARIA.Repository
 
                 var date = DateTime.Now;
                 var IdUser = 0 ;
+                var VeryfyDates = _schedulingDAO.GetAll().Where(x => x.HairCurtDate.Date == date.Date);
+                if (!VeryfyDates.Any())
+                {
+                    throw new OperationCanceledException("We do not have appointments for this date.");
+                }
                 var getScheduling = _schedulingDAO.GetAll().Where(x => x.HairCurtDate.Date == date.Date && x.SchedulingCompleted == false).ToList();
                 if (getScheduling != null)
                 {
@@ -420,11 +425,11 @@ namespace API_BARBEARIA.Repository
                         smtpClient.EnableSsl = true;
 
                         smtpClient.Send(mailMessage);
-                        return "sucess";
 
                     }
             }
-                    return "Error";
+                return "sucess";
+                
             }
             catch
             {
