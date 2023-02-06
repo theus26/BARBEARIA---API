@@ -12,6 +12,7 @@ using System.Numerics;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using API_BARBEARIA.DTO;
 
 namespace API_BARBEARIA.Repository
 {
@@ -367,10 +368,15 @@ namespace API_BARBEARIA.Repository
             }
         }
 
-        public List <Scheduling> GetAllScheduling()
+        public ListResultAllSchedulingDTO GetAllScheduling()
         {
             var GetAllScheduling = _schedulingDAO.GetAll().ToList();
-            return GetAllScheduling;
+            var result = new ListResultAllSchedulingDTO()
+            {
+                schedulings = GetAllScheduling,
+                Count = GetAllScheduling.Count()
+            };
+            return result;
         }
 
         public List<User> GetallUsers()
@@ -379,7 +385,7 @@ namespace API_BARBEARIA.Repository
             return GetAllUsers;
         }
 
-        public List<Scheduling> GetSchedulingPerId(long IdUser)
+        public ListResultSchedulingDTO GetSchedulingPerId(long IdUser)
         {
             var UserId = _userDAO.GetAll().Where(x => x.IdUser == IdUser);
             if (!UserId.Any())
@@ -387,8 +393,15 @@ namespace API_BARBEARIA.Repository
                 throw new OperationCanceledException("User Don´t exist");
             }
             var getAll = _schedulingDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
-            return getAll;
+            var count = getAll.Count();
+            var Result = new ListResultSchedulingDTO()
+            {
+                schedulings = getAll,
+                Count = count
+            };
+            return Result;
         }
+        
 
         public string WarnigsRoutine()
         {

@@ -20,9 +20,9 @@ namespace API_BARBEARIA.Manager.Interfaces
         UpdateSchedulingDTO UpdateScheduling(UpdateSchedulingDTO scheduling);
         string DeleteScheduling(long IdScheduling);
         string CompletedScheduling(SchedulingCompletedDTO schedulingCompleted);
-        List<Scheduling> GetallScheduling();
+        ListResultAllSchedulingDTO GetallScheduling();
         List<User> GetallUsers();
-        List<Scheduling> GetScgedulingPerId(long IdUser);
+        ListResultSchedulingDTO GetScgedulingPerId(long IdUser);
         string WarningsRoutine();
         string Logout(LogoutDTO logout);
     }

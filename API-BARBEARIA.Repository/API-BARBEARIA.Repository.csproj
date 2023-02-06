@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\API-BARBEARIA.DAL\API-BARBEARIA.DAL.csproj" />
+    <ProjectReference Include="..\API-BARBEARIA.DTO\API-BARBEARIA.DTO.csproj" />
   </ItemGroup>
 
 </Project>

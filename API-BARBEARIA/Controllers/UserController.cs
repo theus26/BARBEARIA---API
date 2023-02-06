@@ -17,7 +17,7 @@ namespace API_BARBEARIA.Controllers
            
 
         }
-        [AuthAttributes]
+       
         [HttpGet]
         public ActionResult HealthCheck()
         {
@@ -66,7 +66,7 @@ namespace API_BARBEARIA.Controllers
                 });
             }
         }
-
+        [AuthAttributes]
         [HttpPost]
         public IActionResult Scheduling(SchedulingDTO scheduling)
         {
@@ -88,7 +88,7 @@ namespace API_BARBEARIA.Controllers
             }
 
         }
-
+        [AuthAttributes]
         [HttpPatch]
         public IActionResult UpdateUser(UpdateUserDTO UserUpdate)
         {
@@ -109,7 +109,7 @@ namespace API_BARBEARIA.Controllers
                 });
             }
         }
-
+        [AuthAttributes]
         [HttpDelete ("{IdUser}")]
         public IActionResult DeleteUser (long Iduser)
         {
@@ -132,7 +132,7 @@ namespace API_BARBEARIA.Controllers
 
         }
 
-
+        [AuthAttributes]
         [HttpPatch]
         public IActionResult UpdateScheduling(UpdateSchedulingDTO updateScheduling)
         {
@@ -153,7 +153,7 @@ namespace API_BARBEARIA.Controllers
                 });
             }
         }
-
+        [AuthAttributes]
         [HttpDelete ("{IdScheduling}")]
         public IActionResult DeleteScheduling(long IdScheduling)
         {
@@ -174,7 +174,7 @@ namespace API_BARBEARIA.Controllers
                 });
             }
         }
-
+        [AuthAttributes]
         [HttpPost]
         public IActionResult SchedulingCompleted(SchedulingCompletedDTO schedulingCompleted)
         {
@@ -195,7 +195,7 @@ namespace API_BARBEARIA.Controllers
                 });
             }
         }
-
+        [AuthAttributes]
         [HttpGet]
         public IActionResult GetAllScheduling()
         {
@@ -215,7 +215,7 @@ namespace API_BARBEARIA.Controllers
                 });
             }
         }
-
+        [AuthAttributes]
         [HttpGet]
         public IActionResult GetAllUsers()
         {
@@ -235,7 +235,7 @@ namespace API_BARBEARIA.Controllers
                 });
             }
         }
-
+        [AuthAttributes]
         [HttpGet("{IdUser}")]
         public IActionResult GetSchedulingPerIdUser(long IdUser)
         {
@@ -257,7 +257,7 @@ namespace API_BARBEARIA.Controllers
 
         }
 
-
+        
         [HttpGet]
         public IActionResult WarningRoutine()
         {

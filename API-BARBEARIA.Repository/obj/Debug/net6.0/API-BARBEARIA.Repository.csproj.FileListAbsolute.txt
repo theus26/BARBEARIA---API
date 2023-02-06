@@ -63,3 +63,8 @@ C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - 
 C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA.Repository\bin\Debug\net6.0\API-BARBEARIA.DAL.exe
 C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA.Repository\bin\Debug\net6.0\API-BARBEARIA.DAL.dll
 C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA.Repository\bin\Debug\net6.0\API-BARBEARIA.DAL.pdb
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA.Repository\bin\Debug\net6.0\API-BARBEARIA.DTO.deps.json
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA.Repository\bin\Debug\net6.0\API-BARBEARIA.DTO.runtimeconfig.json
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA.Repository\bin\Debug\net6.0\API-BARBEARIA.DTO.exe
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA.Repository\bin\Debug\net6.0\API-BARBEARIA.DTO.dll
+C:\Users\mathe\OneDrive\Área de Trabalho\Matheus\Full-Stack\Barbearia Design - fullStack\Back-End\API-BARBEARIA.Repository\bin\Debug\net6.0\API-BARBEARIA.DTO.pdb

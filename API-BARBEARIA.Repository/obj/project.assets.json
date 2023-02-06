@@ -828,6 +828,22 @@
         "runtime": {
           "bin/placeholder/API-BARBEARIA.DAL.dll": {}
         }
+      },
+      "API-BARBEARIA.DTO/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "API-BARBEARIA.DAL": "1.0.0",
+          "Microsoft.EntityFrameworkCore": "6.0.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "6.0.8",
+          "Pomelo.EntityFrameworkCore.MySql": "6.0.0"
+        },
+        "compile": {
+          "bin/placeholder/API-BARBEARIA.DTO.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/API-BARBEARIA.DTO.dll": {}
+        }
       }
     }
   },
@@ -2097,11 +2113,17 @@
       "type": "project",
       "path": "../API-BARBEARIA.DAL/API-BARBEARIA.DAL.csproj",
       "msbuildProject": "../API-BARBEARIA.DAL/API-BARBEARIA.DAL.csproj"
+    },
+    "API-BARBEARIA.DTO/1.0.0": {
+      "type": "project",
+      "path": "../API-BARBEARIA.DTO/API-BARBEARIA.DTO.csproj",
+      "msbuildProject": "../API-BARBEARIA.DTO/API-BARBEARIA.DTO.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
       "API-BARBEARIA.DAL >= 1.0.0",
+      "API-BARBEARIA.DTO >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 6.0.8",
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.8",
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.8",
@@ -2137,6 +2159,9 @@
           "projectReferences": {
             "C:\\Users\\mathe\\OneDrive\\Área de Trabalho\\Matheus\\Full-Stack\\Barbearia Design - fullStack\\Back-End\\API-BARBEARIA.DAL\\API-BARBEARIA.DAL.csproj": {
               "projectPath": "C:\\Users\\mathe\\OneDrive\\Área de Trabalho\\Matheus\\Full-Stack\\Barbearia Design - fullStack\\Back-End\\API-BARBEARIA.DAL\\API-BARBEARIA.DAL.csproj"
+            },
+            "C:\\Users\\mathe\\OneDrive\\Área de Trabalho\\Matheus\\Full-Stack\\Barbearia Design - fullStack\\Back-End\\API-BARBEARIA.DTO\\API-BARBEARIA.DTO.csproj": {
+              "projectPath": "C:\\Users\\mathe\\OneDrive\\Área de Trabalho\\Matheus\\Full-Stack\\Barbearia Design - fullStack\\Back-End\\API-BARBEARIA.DTO\\API-BARBEARIA.DTO.csproj"
             }
           }
         }

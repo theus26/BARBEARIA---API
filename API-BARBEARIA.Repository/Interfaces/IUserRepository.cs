@@ -1,5 +1,6 @@
 ﻿using API_BARBEARIA.DAL.Entities;
 using API_BARBEARIA.DAL.Enums;
+using API_BARBEARIA.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,9 @@ namespace API_BARBEARIA.Repository.Interfaces
         Scheduling UpdateScheduling(long IdScheduling, long IdUser, DateTime HairCurtDate, string DesiredService, string Time, BarberEnum barberEnum);
         string DeleteScheduling(long IdScheduling);
         string SchedulingCompleted (long IdScheduling, bool SchedulingCompleted);
-        List<Scheduling> GetAllScheduling();
+        ListResultAllSchedulingDTO GetAllScheduling();
         List<User> GetallUsers();
-        List<Scheduling> GetSchedulingPerId(long IdUser);
+        ListResultSchedulingDTO GetSchedulingPerId(long IdUser);
         string WarnigsRoutine();
         Sessions CreateSession(long IdUser, string Token);
         Sessions SeeTokenValid(string Token);

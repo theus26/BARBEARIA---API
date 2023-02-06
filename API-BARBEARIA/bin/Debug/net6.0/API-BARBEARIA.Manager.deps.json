@@ -597,6 +597,7 @@
       "API-BARBEARIA.Repository/1.0.0": {
         "dependencies": {
           "API-BARBEARIA.DAL": "1.0.0",
+          "API-BARBEARIA.DTO": "1.0.0",
           "Microsoft.EntityFrameworkCore": "6.0.8",
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.8",
           "Pomelo.EntityFrameworkCore.MySql": "6.0.0"

@@ -27,6 +27,21 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var OpenCors = "_openCors";
+
+// Configuring cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: OpenCors,
+                        builder =>
+                        {
+                            builder.AllowAnyOrigin();
+                            builder.WithMethods("PUT", "DELETE", "GET", "POST");
+                            builder.AllowAnyHeader();
+                        });
+});
+
+
 
 var app = builder.Build();
 
@@ -41,7 +56,7 @@ app.UseHttpsRedirection();
 
 
 app.UseAuthorization();
-
+app.UseCors(OpenCors);
 app.MapControllers();
 
 app.Run();
