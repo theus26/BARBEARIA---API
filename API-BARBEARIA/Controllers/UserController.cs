@@ -89,7 +89,7 @@ namespace API_BARBEARIA.Controllers
 
         }
         [AuthAttributes]
-        [HttpPatch]
+        [HttpPut]
         public IActionResult UpdateUser(UpdateUserDTO UserUpdate)
         {
             try
@@ -133,7 +133,7 @@ namespace API_BARBEARIA.Controllers
         }
 
         [AuthAttributes]
-        [HttpPatch]
+        [HttpPut]
         public IActionResult UpdateScheduling(UpdateSchedulingDTO updateScheduling)
         {
             try

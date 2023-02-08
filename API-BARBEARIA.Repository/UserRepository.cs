@@ -270,13 +270,13 @@ namespace API_BARBEARIA.Repository
                 }
                 var DesiredServiceUnic = _schedulingDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
 
-                foreach (Scheduling desiredService in DesiredServiceUnic)
-                {
-                    if (desiredService.DesiredService == DesiredService)
-                    {
-                        throw new Exception("service already scheduled for today");
-                    }
-                }
+                //foreach (Scheduling desiredService in DesiredServiceUnic)
+                //{
+                //    if (desiredService.DesiredService == DesiredService)
+                //    {
+                //        throw new Exception("service already scheduled for today");
+                //    }
+                //}
 
                 var ThereIstime = _schedulingDAO.GetAll().Where(x => x.Time == Time && x.HairCurtDate == HairCurtDate);
 
@@ -477,22 +477,25 @@ namespace API_BARBEARIA.Repository
             try
             {
 
-            var GetSession = _sessionDAO.GetAll().FirstOrDefault(x => x.Token == Token);
-            if (GetSession.SessionFinalized == true) throw new ArgumentException("Session Invalid, Session was finalized");
-            if (GetSession != null)
-            {
-                var subtract = DateTime.Now.Day - GetSession.LoginDate.Day;
-                if (subtract > 1)
-                {
-                    GetSession.LogoutDate = DateTime.Now;
-                    GetSession.SessionFinalized = true;
-                    var salved = _sessionDAO.Update(GetSession);
-                    return salved;
-                }
+            var GetSession = _sessionDAO.GetAll().Where(x => x.Token == Token).ToList();
 
-            }
-                    GetSession = null;
-                    return GetSession;
+                foreach(var Session in GetSession)
+                {
+                    if(Session.SessionFinalized == false)
+                    {
+                        var subtract = DateTime.Now.Day - Session.LoginDate.Day;
+                        if (subtract > 1)
+                        {
+                            Session.LogoutDate = DateTime.Now;
+                            Session.SessionFinalized = true;
+                            var salved = _sessionDAO.Update(Session);
+                            return salved;
+                        }
+                    };
+                }
+                    var finalized = new Sessions();
+                    finalized = null;
+                    return finalized;
             }
             catch
             {
