@@ -217,7 +217,7 @@ namespace API_BARBEARIA.Manager
                 if (user.Email.Length < 3) throw new ArgumentException("Email must be more than 3 characters");
                 if (user.Name.Length < 3) throw new ArgumentException("Name must be more than 3 characters");
                 if (user.Phone.Length < 3) throw new ArgumentException("Phone must be more than 3 characters");
-                if (user.Phone.Length >= 14) throw new ArgumentException("Phone must have less than 12 characters");
+                //if (user.Phone.Length >= 15) throw new ArgumentException("Phone must have less than 12 characters");
                 if (user.CPF.Length >= 15) throw new ArgumentException("CPF must have less than 11 characters");
                 if (user.CPF.Length < 11) throw new ArgumentException("CPF must be more than 3 characters");
                 if (user.Password.Length < 3) throw new ArgumentException("Password be more than 3 characters");
