@@ -59,6 +59,10 @@ namespace API_BARBEARIA.DAL.Migrations
                     b.Property<long>("IdUser")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("NameUser")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<bool>("SchedulingCompleted")
                         .HasColumnType("tinyint(1)");
 

@@ -105,7 +105,7 @@ namespace API_BARBEARIA.Repository
         {
             try
             {
-                if (DesiredService.Count() < 2 || Time.Count() < 2)
+                if (DesiredService.Count() < 2 || Time.Count() < 2) 
                 {
                     throw new OperationCanceledException("Could not create a new user, some fields may be invalid");
                 }
@@ -483,8 +483,10 @@ namespace API_BARBEARIA.Repository
                 {
                     if(Session.SessionFinalized == false)
                     {
-                        var subtract = DateTime.Now.Day - Session.LoginDate.Day;
-                        if (subtract > 1)
+                        var subtract = DateTime.Now.Hour - Session.LoginDate.Hour;
+                        var result = Math.Abs(subtract);
+                        if (result > 5)
+
                         {
                             Session.LogoutDate = DateTime.Now;
                             Session.SessionFinalized = true;

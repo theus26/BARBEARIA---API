@@ -14,6 +14,7 @@ namespace API_BARBEARIA.DAL.Entities
         [Key]
         public long IdSchedulling { get; set; } //Esse é o Id da tabela agendamento
         public long IdUser { get; set; } // Esse é o Id do dono do agendamento
+        public string NameUser { get; set; } // Esse é o Id do dono do agendamento
         [Required]
         public DateTime HairCurtDate { get; set; }
         [Required]
