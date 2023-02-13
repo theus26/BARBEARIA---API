@@ -406,5 +406,21 @@ namespace API_BARBEARIA.Manager
                 throw;
             }
         }
+
+        public ListResultAllSchedulingDTO SchedulingsBarbers(string NameBarber)
+        {
+            try
+            {
+            if (string.IsNullOrWhiteSpace(NameBarber) || string.IsNullOrEmpty(NameBarber)) throw new ArgumentException("Fiel can´t be empty or null");
+
+                var GetSchedulingBarbers = _userRepository.GetSchedulingsBarbers(NameBarber); 
+                return GetSchedulingBarbers;
+            }
+
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

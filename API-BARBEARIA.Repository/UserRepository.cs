@@ -115,16 +115,11 @@ namespace API_BARBEARIA.Repository
                     throw new OperationCanceledException("User Don´t exist");
                 }
 
-                var GetUser = _userDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
+                var GetUser = _userDAO.GetAll().FirstOrDefault(x => x.IdUser == IdUser);
 
                 //Procurar pelo o usuario e verifica se ele é admin, caso seja retornar um erro.
-                foreach (User user in GetUser)
-                {
-                    if (user.BarberAdmin == true)
-                    {
-                        throw new Exception("It was not possible to make an appointment.");
-                    }
-                }
+                if (GetUser.BarberAdmin == true) throw new Exception("It was not possible to make an appointment.");
+                
                 var DesiredServiceUnic = _schedulingDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
 
                 // Procurar agendamentos concluidos, caso haja ele permite um novo cadastro na mesma data e horario.
@@ -133,7 +128,7 @@ namespace API_BARBEARIA.Repository
                     if(desiredService.SchedulingCompleted == true)
                     {
                         //Valida se o usuario já não tem esse serviço agendado
-                        if (desiredService.DesiredService == DesiredService)
+                        if (desiredService.DesiredService == DesiredService && desiredService.SchedulingCompleted == true)
                         {
                             throw new Exception("service already scheduled for today");
                         }
@@ -151,7 +146,8 @@ namespace API_BARBEARIA.Repository
                             Time = Time,
                             DesiredService = DesiredService,
                             HairCurtDate = HairCurtDate,
-                            Barber = barberEnum
+                            Barber = barberEnum,
+                            NameUser = GetUser.UserName
 
                         };
                         _schedulingDAO.Create(Salveds);
@@ -180,7 +176,8 @@ namespace API_BARBEARIA.Repository
                     Time = Time,
                     DesiredService = DesiredService,
                     HairCurtDate = HairCurtDate,
-                    Barber = barberEnum
+                    Barber = barberEnum,
+                    NameUser = GetUser.UserName
 
                 };
                 _schedulingDAO.Create(Salved);
@@ -370,7 +367,7 @@ namespace API_BARBEARIA.Repository
 
         public ListResultAllSchedulingDTO GetAllScheduling()
         {
-            var GetAllScheduling = _schedulingDAO.GetAll().ToList();
+            var GetAllScheduling = _schedulingDAO.GetAll().Where(x => x.SchedulingCompleted == false).ToList();
             var result = new ListResultAllSchedulingDTO()
             {
                 schedulings = GetAllScheduling,
@@ -393,6 +390,7 @@ namespace API_BARBEARIA.Repository
                 throw new OperationCanceledException("User Don´t exist");
             }
             var getAll = _schedulingDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
+
             var count = getAll.Count();
             var Result = new ListResultSchedulingDTO()
             {
@@ -536,6 +534,28 @@ namespace API_BARBEARIA.Repository
             }
 
 
+        }
+
+        public ListResultAllSchedulingDTO GetSchedulingsBarbers(string NameBarber)
+        {
+            try
+            {
+            var getSchedulingBarber = _schedulingDAO.GetAll().Where(x => x.Barber.ToString() == NameBarber && x.SchedulingCompleted == false).ToList();
+            
+                var result = new ListResultAllSchedulingDTO()
+                {
+                    schedulings = getSchedulingBarber,
+                    Count = getSchedulingBarber.Count()
+
+                };
+                return result;
+         
+
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

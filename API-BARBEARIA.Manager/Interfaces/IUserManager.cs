@@ -25,5 +25,6 @@ namespace API_BARBEARIA.Manager.Interfaces
         ListResultSchedulingDTO GetScgedulingPerId(long IdUser);
         string WarningsRoutine();
         string Logout(LogoutDTO logout);
+        ListResultAllSchedulingDTO SchedulingsBarbers (string NameBarber);
     }
 }

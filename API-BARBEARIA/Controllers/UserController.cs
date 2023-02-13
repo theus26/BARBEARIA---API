@@ -257,6 +257,27 @@ namespace API_BARBEARIA.Controllers
 
         }
 
+        [HttpGet ("{NameBarber}")]
+        public IActionResult GetBarberAppointment(string NameBarber)
+        {
+            try
+            {
+                var getAllBarber = _userManager.SchedulingsBarbers(NameBarber);
+                return Ok(getAllBarber);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "Failed to get Scheduling from the barber, please try again",
+                    Details = ex.Message
+                });
+            }
+
+
+        }
+
         
         [HttpGet]
         public IActionResult WarningRoutine()

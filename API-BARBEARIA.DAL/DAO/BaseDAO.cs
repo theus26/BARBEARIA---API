@@ -95,7 +95,7 @@ namespace API_BARBEARIA.DAL.DAO
             var obj = _context.Set<T>().Find(v);
             if (obj == null)
             {
-                throw new OperationCanceledException("Could not find any with the given Token");
+                throw new OperationCanceledException("Could not find any with the given string");
             }
             return obj;
         }
