@@ -47,6 +47,30 @@ namespace API_BARBEARIA.Controllers
             }
         }
 
+        [AuthAttributes]
+        [HttpGet("{IdUser}")]
+        public IActionResult GetUserId(long IdUser)
+        {
+            try
+            {
+                var getUser = _userManager.GetUserId(IdUser);
+                return Ok(getUser);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "Incorrect email or password, please try again.",
+                    Details = ex.Message
+                });
+            }
+
+
+        }
+
+
         [HttpPost]
         public IActionResult Login(LoginDTO login)
         {

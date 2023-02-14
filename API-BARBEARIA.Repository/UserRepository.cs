@@ -128,7 +128,7 @@ namespace API_BARBEARIA.Repository
                     if(desiredService.SchedulingCompleted == true)
                     {
                         //Valida se o usuario já não tem esse serviço agendado
-                        if (desiredService.DesiredService == DesiredService && desiredService.SchedulingCompleted == true)
+                        if (desiredService.HairCurtDate == HairCurtDate && desiredService.SchedulingCompleted == true)
                         {
                             throw new Exception("service already scheduled for today");
                         }
@@ -389,7 +389,7 @@ namespace API_BARBEARIA.Repository
             {
                 throw new OperationCanceledException("User Don´t exist");
             }
-            var getAll = _schedulingDAO.GetAll().Where(x => x.IdUser == IdUser).ToList();
+            var getAll = _schedulingDAO.GetAll().Where(x => x.IdUser == IdUser && x.SchedulingCompleted == false).ToList();
 
             var count = getAll.Count();
             var Result = new ListResultSchedulingDTO()
@@ -551,6 +551,20 @@ namespace API_BARBEARIA.Repository
                 return result;
          
 
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public User GetUserId(long IdUser)
+        {
+            try
+            {
+                var getUser = _userDAO.Get(IdUser);
+                if (getUser == null) throw new ArgumentException("could not find this IdUser");
+                return getUser;
             }
             catch
             {

@@ -157,7 +157,7 @@ namespace API_BARBEARIA.Manager
                 if (scheduling.HairCurtDate.ToString() == "01/01/1900") throw new ArgumentException("Hair curte date can´t be empty or null");
 
                 //validação de tamanho da string
-                if (scheduling.DesiredService.Length <= 5) throw new ArgumentException("Desired Service must be more than 5 characters");
+                if (scheduling.DesiredService.Length <= 4) throw new ArgumentException("Desired Service must be more than 5 characters");
                 if (scheduling.Time.Length < 3) throw new ArgumentException("Time must be more 3 Characters");
                 if (scheduling.HairCurtDate.ToString().Length < 3) throw new ArgumentException("Hair curt date must be more 3 characters");
                 if (scheduling.IdUser <= 0) throw new ArgumentException("There is no User with Iduser 0");
@@ -173,7 +173,7 @@ namespace API_BARBEARIA.Manager
                 //Envia o email de confirmação para usuario
                 MailMessage mailMessage = new MailMessage("barbeariadesign628@gmail.com", GetUser.Email);
 
-                mailMessage.Subject = $"Agendamento realizado!";
+                 mailMessage.Subject = $"Agendamento realizado!";
                 mailMessage.IsBodyHtml = true;
                 mailMessage.Body = $"<h1> Olá, {GetUser.UserName}!  </h1> <br> <p> Vinhemos confirmar que,  seu agendamento foi realizado com sucesso,  para o dia, <b> {scheduling.HairCurtDate.Date}</b> as <b> {scheduling.Time}</b> horas, para realizar o serviço desejado: <b>{scheduling.DesiredService}</b> </p> <br> <hr> <br> Te Aguardamos ansiosamente.  ";
                 mailMessage.SubjectEncoding = Encoding.GetEncoding("UTF-8");
@@ -417,6 +417,20 @@ namespace API_BARBEARIA.Manager
                 return GetSchedulingBarbers;
             }
 
+            catch
+            {
+                throw;
+            }
+        }
+
+        public User GetUserId(long IdUser)
+        {
+            try
+            {
+                if (IdUser <= 0) throw new ArgumentException("could not find this IdUser");
+                var getUser = _userRepository.GetUserId(IdUser);
+                return getUser;
+            }
             catch
             {
                 throw;

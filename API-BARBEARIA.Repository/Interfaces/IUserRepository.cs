@@ -30,6 +30,7 @@ namespace API_BARBEARIA.Repository.Interfaces
         Sessions SeeTokenValid(string Token);
         string Logout(long IdUser, string token);
         ListResultAllSchedulingDTO GetSchedulingsBarbers(string NameBarber);
+        User GetUserId(long IdUser);
 
     }
 }
