@@ -18,8 +18,11 @@ namespace API_BARBEARIA.Attributes
             IDAO<Scheduling> _schedulingDAO = new BaseDAO<Scheduling>();
             IDAO<Barber> _barberDAO = new BaseDAO<Barber>();
             IDAO<Sessions> _sessionDAO = new BaseDAO<Sessions>();
+            IDAO<Service> _ServiceDAO = new BaseDAO<Service>();
+            IDAO<Horary> _horaryDAO = new BaseDAO<Horary>();
+            IDAO<Shavy> _shavyDAO = new BaseDAO<Shavy>();
 
-            _userRepository = new UserRepository(_userDAO, _schedulingDAO, _barberDAO, _sessionDAO);
+            _userRepository = new UserRepository(_userDAO, _schedulingDAO, _barberDAO, _sessionDAO, _ServiceDAO, _shavyDAO, _horaryDAO);
 
         }
         public override void OnActionExecuting(ActionExecutingContext context)
