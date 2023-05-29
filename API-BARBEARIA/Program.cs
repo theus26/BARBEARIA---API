@@ -1,13 +1,9 @@
-﻿using API_BARBEARIA.Commons.Util;
-using API_BARBEARIA.DAL.DAO;
+﻿using API_BARBEARIA.DAL.DAO;
 using API_BARBEARIA.DAL.Entities;
 using API_BARBEARIA.Manager;
 using API_BARBEARIA.Manager.Interfaces;
 using API_BARBEARIA.Repository;
 using API_BARBEARIA.Repository.Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +15,9 @@ builder.Services.AddScoped<IDAO<User>, UserDAO>();
 builder.Services.AddScoped<IDAO<Scheduling>, BaseDAO<Scheduling>>();
 builder.Services.AddScoped<IDAO<Barber>, BaseDAO<Barber>>();
 builder.Services.AddScoped<IDAO<Sessions>, BaseDAO<Sessions>>();
+builder.Services.AddScoped<IDAO<Shavy>, BaseDAO<Shavy>>();
+builder.Services.AddScoped<IDAO<Horary>, BaseDAO<Horary>>();
+builder.Services.AddScoped<IDAO<Services>, BaseDAO<Services>>();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
