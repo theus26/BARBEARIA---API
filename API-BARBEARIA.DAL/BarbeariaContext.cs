@@ -14,6 +14,9 @@ namespace API_BARBEARIA.DAL
         public DbSet<Scheduling> scheduling { get; set; }
         public DbSet<Barber> barber { get; set; }
         public DbSet<Sessions> Session { get; set; }
+        public DbSet<Service> services { get; set; }
+        public DbSet<Shavy> shavies { get; set; }
+        public DbSet<Horary> horaries { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
