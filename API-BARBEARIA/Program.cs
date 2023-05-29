@@ -17,7 +17,7 @@ builder.Services.AddScoped<IDAO<Barber>, BaseDAO<Barber>>();
 builder.Services.AddScoped<IDAO<Sessions>, BaseDAO<Sessions>>();
 builder.Services.AddScoped<IDAO<Shavy>, BaseDAO<Shavy>>();
 builder.Services.AddScoped<IDAO<Horary>, BaseDAO<Horary>>();
-builder.Services.AddScoped<IDAO<Services>, BaseDAO<Services>>();
+builder.Services.AddScoped<IDAO<Service>, BaseDAO<Service>>();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
