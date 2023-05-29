@@ -1,10 +1,6 @@
 ﻿using API_BARBEARIA.DAL.Entities;
 using API_BARBEARIA.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace API_BARBEARIA.Manager.Interfaces
 {
@@ -27,5 +23,8 @@ namespace API_BARBEARIA.Manager.Interfaces
         string Logout(LogoutDTO logout);
         ListResultAllSchedulingDTO SchedulingsBarbers (string NameBarber);
         User GetUserId(long IdUser);
+        List<Horary> GetAllHoraries();
+        List<Shavy> GetAllShavy();
+        List<Service> GetAllService();
     }
 }

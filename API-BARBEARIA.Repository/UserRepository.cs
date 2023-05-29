@@ -22,9 +22,15 @@ namespace API_BARBEARIA.Repository
         private readonly IDAO<Scheduling> _schedulingDAO;
         private readonly IDAO<Barber> _barberDAO;
         private readonly IDAO<Sessions> _sessionDAO;
+        private readonly IDAO<Service> _service;
+        private readonly IDAO<Shavy> _shavy;
+        private readonly IDAO<Horary> _horaries;
 
-        public UserRepository(IDAO<User> userDAO, IDAO<Scheduling> schedulingDAO, IDAO<Barber> barberDAO, IDAO<Sessions> sessionDAO)
+        public UserRepository(IDAO<User> userDAO, IDAO<Scheduling> schedulingDAO, IDAO<Barber> barberDAO, IDAO<Sessions> sessionDAO, IDAO<Service> servicesDAO, IDAO<Shavy> shavyDAO, IDAO<Horary> horaryDAO)
         {
+            _horaries = horaryDAO;
+            _service = servicesDAO;
+            _shavy = shavyDAO;
             _userDAO = userDAO;
             _schedulingDAO = schedulingDAO;
             _barberDAO = barberDAO;
@@ -115,6 +121,24 @@ namespace API_BARBEARIA.Repository
                     throw new OperationCanceledException("User Don´t exist");
                 }
 
+                //Realizar validação para saber se horario está disponivel
+                var getHoraries = _horaries.GetAll().FirstOrDefault(x => x.horary == Time);
+                if (getHoraries.AvailableTime == false)
+                {
+                    throw new Exception("It was not possible to make an appointment because the time has already been chosen.");
+                }
+
+                try
+                {
+                    //realizamos o agendamento do horario
+                    getHoraries.AvailableTime = false;
+                    _horaries.Update(getHoraries);
+                }
+                catch
+                {
+                    throw;
+                }
+                
                 var GetUser = _userDAO.GetAll().FirstOrDefault(x => x.IdUser == IdUser);
 
                 //Procurar pelo o usuario e verifica se ele é admin, caso seja retornar um erro.
@@ -159,7 +183,10 @@ namespace API_BARBEARIA.Repository
                         };
                         _barberDAO.Create(newSalveds);
 
-                        return Salveds;
+                    
+
+
+                    return Salveds;
                     }
 
                 //Caso o cliente não tenha concluido o serviço ele faz novamente a validação para poder salvar.    
@@ -565,6 +592,66 @@ namespace API_BARBEARIA.Repository
                 var getUser = _userDAO.Get(IdUser);
                 if (getUser == null) throw new ArgumentException("could not find this IdUser");
                 return getUser;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public List<Shavy> GetAllShavies()
+        {
+            var getAllShavs = _shavy.GetAll().ToList();
+
+            try
+            {
+                if (getAllShavs == null)
+                {
+                    throw new ArgumentException("Não foi possivel retornar a lista");
+                }
+
+                return getAllShavs;
+
+            }
+            catch
+            {
+                throw;
+            }
+
+            
+        }
+
+        public List<Horary> GetAllHoraries()
+        {
+            var getAllHoraries = _horaries.GetAll().Where(x=> x.AvailableTime == true).ToList();
+
+            try
+            {
+                if (getAllHoraries == null)
+                {
+                    throw new ArgumentException("Não foi possivel retornar a lista");
+                }
+
+                return getAllHoraries;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public List<Service> GetAllService()
+        {
+            var getAllServices = _service.GetAll().ToList();
+
+            try
+            {
+                if (getAllServices == null)
+                {
+                    throw new ArgumentException("Não foi possivel retornar a lista");
+                }
+
+                return getAllServices;
             }
             catch
             {

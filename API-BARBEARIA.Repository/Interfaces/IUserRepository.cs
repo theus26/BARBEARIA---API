@@ -31,6 +31,9 @@ namespace API_BARBEARIA.Repository.Interfaces
         string Logout(long IdUser, string token);
         ListResultAllSchedulingDTO GetSchedulingsBarbers(string NameBarber);
         User GetUserId(long IdUser);
+        List<Shavy> GetAllShavies();
+        List<Horary> GetAllHoraries();
+        List<Service> GetAllService();
 
     }
 }

@@ -4,14 +4,11 @@ using API_BARBEARIA.DAL.Entities;
 using API_BARBEARIA.DTO;
 using API_BARBEARIA.Manager.Interfaces;
 using API_BARBEARIA.Repository.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+
 
 namespace API_BARBEARIA.Manager
 {
@@ -161,34 +158,34 @@ namespace API_BARBEARIA.Manager
                 if (scheduling.Time.Length < 3) throw new ArgumentException("Time must be more 3 Characters");
                 if (scheduling.HairCurtDate.ToString().Length < 3) throw new ArgumentException("Hair curt date must be more 3 characters");
                 if (scheduling.IdUser <= 0) throw new ArgumentException("There is no User with Iduser 0");
-                if ( scheduling.HairCurtDate <= DateTime.Now) throw new ArgumentException("Date Invalid");
+                if ( scheduling.HairCurtDate < DateTime.Now) throw new ArgumentException("Date Invalid");
 
                
 
                 //Envia dados para o repository
                 var Sendscheduling = _userRepository.scheduling(scheduling.IdUser, scheduling.HairCurtDate, scheduling.DesiredService, scheduling.Time, scheduling.barberEnum);
                 //Pega usuario pelo id para poder pegar algumas informações.
-                var GetUser = _userRepository.GetEmail(scheduling.IdUser);
-       
-                //Envia o email de confirmação para usuario
-                MailMessage mailMessage = new MailMessage("barbeariadesign628@gmail.com", GetUser.Email);
+                //var GetUser = _userRepository.GetEmail(scheduling.IdUser);
+                #region Código de enviar email comentado
+                ////Envia o email de confirmação para usuario
+                //MailMessage mailMessage = new MailMessage("barbeariadesign628@gmail.com", GetUser.Email);
 
-                 mailMessage.Subject = $"Agendamento realizado!";
-                mailMessage.IsBodyHtml = true;
-                mailMessage.Body = $"<h1> Olá, {GetUser.UserName}!  </h1> <br> <p> Vinhemos confirmar que,  seu agendamento foi realizado com sucesso,  para o dia, <b> {scheduling.HairCurtDate.Date}</b> as <b> {scheduling.Time}</b> horas, para realizar o serviço desejado: <b>{scheduling.DesiredService}</b> </p> <br> <hr> <br> Te Aguardamos ansiosamente.  ";
-                mailMessage.SubjectEncoding = Encoding.GetEncoding("UTF-8");
-                mailMessage.BodyEncoding = Encoding.GetEncoding("UTF-8");
+                // mailMessage.Subject = $"Agendamento realizado!";
+                //mailMessage.IsBodyHtml = true;
+                //mailMessage.Body = $"<h1> Olá, {GetUser.UserName}!  </h1> <br> <p> Vinhemos confirmar que,  seu agendamento foi realizado com sucesso,  para o dia, <b> {scheduling.HairCurtDate.Date}</b> as <b> {scheduling.Time}</b> horas, para realizar o serviço desejado: <b>{scheduling.DesiredService}</b> </p> <br> <hr> <br> Te Aguardamos ansiosamente.  ";
+                //mailMessage.SubjectEncoding = Encoding.GetEncoding("UTF-8");
+                //mailMessage.BodyEncoding = Encoding.GetEncoding("UTF-8");
 
-                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+                //SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
 
-                smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new NetworkCredential("barbeariadesign628@gmail.com", "xlbgbmrhrhjkfnzt");
+                //smtpClient.UseDefaultCredentials = false;
+                //smtpClient.Credentials = new NetworkCredential("barbeariadesign628@gmail.com", "xlbgbmrhrhjkfnzt");
 
-                smtpClient.EnableSsl = true;
+                //smtpClient.EnableSsl = true;
 
-                smtpClient.Send(mailMessage);
+                //smtpClient.Send(mailMessage);
 
-
+                #endregion
 
 
                 return "appointment successfully made";
@@ -435,6 +432,23 @@ namespace API_BARBEARIA.Manager
             {
                 throw;
             }
+        }
+
+        public List<Horary> GetAllHoraries()
+        {
+            var getAllHoraries = _userRepository.GetAllHoraries();
+            return getAllHoraries;
+        }
+
+        public List<Shavy> GetAllShavy()
+        {
+            var getAllShavy = _userRepository.GetAllShavies();
+            return getAllShavy;
+        }
+
+        public List<Service> GetAllService()
+        {
+            return _userRepository.GetAllService(); 
         }
     }
 }
