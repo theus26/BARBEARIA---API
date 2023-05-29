@@ -23,9 +23,69 @@ namespace API_BARBEARIA.Controllers
         {
             return Ok("I'm alive and working");
         }
-        
+
+        [HttpGet]
+        public IActionResult GetAllShavys()
+        {
+            try
+            {
+                var GetShavys = _userManager.GetAllShavy();
+                return Ok(GetShavys);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "There was an error registering, please try again!",
+                    Details = ex.Message
+                });
+            }
+
+        }
+
+        [HttpGet]
+        public IActionResult GetAllServices()
+        {
+            try
+            {
+                var GetService = _userManager.GetAllService();
+                return Ok(GetService);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "There was an error registering, please try again!",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetAllHoraries()
+        {
+            try
+            {
+                var GetHoraries = _userManager.GetAllHoraries();
+                return Ok(GetHoraries);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new RespostaErrorDTO()
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Error = "There was an error registering, please try again!",
+                    Details = ex.Message
+                });
+            }
+        }
+
         [HttpPost]
-   
         public IActionResult RegisterUser(UserRegisterDTO userRegister)
         {
             try
