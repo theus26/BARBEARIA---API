@@ -18,6 +18,8 @@ builder.Services.AddScoped<IDAO<Sessions>, BaseDAO<Sessions>>();
 builder.Services.AddScoped<IDAO<Shavy>, BaseDAO<Shavy>>();
 builder.Services.AddScoped<IDAO<Horary>, BaseDAO<Horary>>();
 builder.Services.AddScoped<IDAO<Service>, BaseDAO<Service>>();
+builder.Services.AddScoped<IDAO<Routers>, BaseDAO<Routers>>();
+builder.Services.AddScoped<IDAO<RouterUsers>, BaseDAO<RouterUsers>>();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 

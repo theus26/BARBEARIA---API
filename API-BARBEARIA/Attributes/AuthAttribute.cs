@@ -21,8 +21,10 @@ namespace API_BARBEARIA.Attributes
             IDAO<Service> _ServiceDAO = new BaseDAO<Service>();
             IDAO<Horary> _horaryDAO = new BaseDAO<Horary>();
             IDAO<Shavy> _shavyDAO = new BaseDAO<Shavy>();
+            IDAO<Routers> _Router = new BaseDAO<Routers>();
+            IDAO<RouterUsers> _RouterUsersDAO = new BaseDAO<RouterUsers>();
 
-            _userRepository = new UserRepository(_userDAO, _schedulingDAO, _barberDAO, _sessionDAO, _ServiceDAO, _shavyDAO, _horaryDAO);
+            _userRepository = new UserRepository(_userDAO, _schedulingDAO, _barberDAO, _sessionDAO, _ServiceDAO, _shavyDAO, _horaryDAO, _Router, _RouterUsersDAO);
 
         }
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -37,10 +39,18 @@ namespace API_BARBEARIA.Attributes
                 return;
             }
             var SeeTokenValid = _userRepository.SeeTokenValid(token);
-            if (SeeTokenValid != null)
+            if (SeeTokenValid == false)
             {
                 context.HttpContext.Response.StatusCode = 401;
                 context.Result = new JsonResult("Sorry, you Session has expired. Log in and try again!");
+                return;
+            }
+
+            var VerifyRouters = _userRepository.VerifyPermissionsRouter(token, path);
+            if (VerifyRouters == false)
+            {
+                context.HttpContext.Response.StatusCode = 401;
+                context.Result = new JsonResult("Sorry, You do not have access to this route. Log in and try again!");
                 return;
             }
            
