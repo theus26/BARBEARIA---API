@@ -24,6 +24,13 @@ namespace API_BARBEARIA.Controllers
             return Ok("I'm alive and working");
         }
 
+        [AuthAttributes]
+        [HttpGet]
+        public IActionResult ValidateSession()
+        {
+            return Ok("Sesison Valid");
+        }
+
         [HttpGet]
         public IActionResult GetAllShavys()
         {
