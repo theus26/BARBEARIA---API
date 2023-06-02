@@ -32,7 +32,7 @@ namespace API_BARBEARIA.Attributes
             var path = context.HttpContext.Request.Path;
             var token = context.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-            if (string.IsNullOrEmpty(token))
+            if (string.IsNullOrEmpty(token) || token == null)
             {
                 context.HttpContext.Response.StatusCode = 401;
                 context.Result = new JsonResult("Sorry, you are not logged in. Log in and try again!");
